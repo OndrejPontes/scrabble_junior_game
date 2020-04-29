@@ -64,7 +64,7 @@ void BoardBuilder::getSize() {
             inputIsValid = false;
             continue;
         }
-        if (dimension_x < 0 || dimension_x > 20 || dimension_y < 0 || dimension_x > 0) {
+        if (dimension_x < 0 || dimension_x > 20 || dimension_y < 0 || dimension_y > 20) {
             cout << "Input is invalid. Numbers has to be in range from 0 to 20." << endl;
             inputIsValid = false;
         }
@@ -72,11 +72,19 @@ void BoardBuilder::getSize() {
     // That's it, we set size of board
 }
 
-// Loading data from WORDS.TXT file and saving it into words vector
+// Checking if file with words exists, loading data from WORDS.TXT file and saving it into words vector
 void BoardBuilder::loadWords() {
-    ifstream file("data/WORDS.TXT");
+    ifstream file("../BoardBuilder/data/WORDS.TXT"); // TODO: Ask if this have to be hardcoded here
     string str;
-    while (getline(file, str)) {
-        words.push_back(str);
+    if(file) {
+        while (getline(file, str)) {
+            words.push_back(str);
+        }
+    } else {
+        cout<<"File WORDS.TXT wan't found";
     }
+}
+
+void BoardBuilder::printBoard() {
+
 }
