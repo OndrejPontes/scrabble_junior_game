@@ -1,0 +1,2 @@
+Simple text file indicating the development state of the two programs, that is, if all the objectives were
+accomplished or, otherwise, which ones were not achieved, and also which improvements were made, if any.
