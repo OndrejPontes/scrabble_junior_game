@@ -12,13 +12,13 @@ class BoardBuilder {
     bool shouldIKeepGoing = true;
 private:
     void getSize();
+    void loadWords();
+    void printBoard();
     std::string getWord();
     std::string getNameOfFileWhereToSaveBoard();
     bool canWordBeAddedToBoard(std::string);
     void addWordToBoard(std::string);
-    void printBoard();
     void saveBoard(std::string);
-    void loadWords();
     int whatShouldIDo();
 
 public:

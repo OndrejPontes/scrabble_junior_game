@@ -3,16 +3,17 @@
 using namespace std;
 
 #include <iostream>
+#include <fstream>
 
 
 void BoardBuilder::startBuilding() {
     string word;
 
     getSize();
-//    loadWords();
-//
-//    while (shouldIKeepGoing) {
-//        printBoard();
+    loadWords();
+
+    while (shouldIKeepGoing) {
+        printBoard();
 //        switch (whatShouldIDo()) {
 //            case 0:
 //                saveBoard(getNameOfFileWhereToSaveBoard());
@@ -26,7 +27,7 @@ void BoardBuilder::startBuilding() {
 //            default:
 //                shouldIKeepGoing = false;
 //        }
-//    }
+    }
 }
 
 // Asking user for size of the board
@@ -69,4 +70,13 @@ void BoardBuilder::getSize() {
         }
     } while (!inputIsValid);
     // That's it, we set size of board
+}
+
+// Loading data from WORDS.TXT file and saving it into words vector
+void BoardBuilder::loadWords() {
+    ifstream file("data/WORDS.TXT");
+    string str;
+    while (getline(file, str)) {
+        words.push_back(str);
+    }
 }
