@@ -5,8 +5,8 @@
 #include "vector"
 
 class BoardBuilder {
-    int dimension_x;
-    int dimension_y;
+    int dimension_x = 20;
+    int dimension_y = 20;
     char board[20][20];
     std::vector<std::string> words;
     bool shouldIKeepGoing = true;

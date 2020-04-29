@@ -9,11 +9,11 @@ using namespace std;
 void BoardBuilder::startBuilding() {
     string word;
 
-    getSize();
-    loadWords();
+//    getSize();
+//    loadWords();
 
-    while (shouldIKeepGoing) {
-        printBoard();
+//    while (shouldIKeepGoing) {
+    printBoard();
 //        switch (whatShouldIDo()) {
 //            case 0:
 //                saveBoard(getNameOfFileWhereToSaveBoard());
@@ -27,7 +27,7 @@ void BoardBuilder::startBuilding() {
 //            default:
 //                shouldIKeepGoing = false;
 //        }
-    }
+//    }
 }
 
 // Asking user for size of the board
@@ -42,7 +42,7 @@ void BoardBuilder::getSize() {
         getline(cin, input);
         auto delimiter_position = input.find("x"); // Looking for 'x' to know how to split input
         // In the case 'x' wasn't find error message will be shown and loop will start again
-        if (delimiter_position == string::npos){
+        if (delimiter_position == string::npos) {
             cout << "Input is invalid. Use 'x' as divider of two numbers." << endl;
             inputIsValid = false;
             continue;
@@ -76,15 +76,28 @@ void BoardBuilder::getSize() {
 void BoardBuilder::loadWords() {
     ifstream file("../BoardBuilder/data/WORDS.TXT"); // TODO: Ask if this have to be hardcoded here
     string str;
-    if(file) {
+    if (file) {
         while (getline(file, str)) {
             words.push_back(str);
         }
     } else {
-        cout<<"File WORDS.TXT wan't found";
+        cout << "File WORDS.TXT wan't found";
     }
 }
 
-void BoardBuilder::printBoard() {
-
+// Printing actual board
+void BoardBuilder::printBoard() { // TODO: add colors and clear command line on start
+    for (int x = 0; x < dimension_x + 1; x++) {
+        for (int y = 0; y < dimension_y + 1; y++) {
+            if (x == 0 && y == 0)
+                cout << " ";
+            else if (x == 0)
+                cout << char(96 + y);
+            else if (y == 0)
+                cout << char(64 + x);
+            else
+                cout << board[x-1][y-1];
+        }
+        cout << endl;
+    }
 }
