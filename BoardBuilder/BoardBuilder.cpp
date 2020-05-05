@@ -9,25 +9,25 @@ using namespace std;
 void BoardBuilder::startBuilding() {
     string word;
 
-//    getSize();
-//    loadWords();
+    getSize();
+    loadWords();
 
-//    while (shouldIKeepGoing) {
+    while (shouldIKeepGoing) {
     printBoard();
-//        switch (whatShouldIDo()) {
-//            case 0:
-//                saveBoard(getNameOfFileWhereToSaveBoard());
-//                break;
-//            case 1:
-//                word = getWord();
-//                if (canWordBeAddedToBoard(word)) {
-//                    addWordToBoard(word);
-//                }
-//                break;
-//            default:
-//                shouldIKeepGoing = false;
-//        }
-//    }
+        switch (whatShouldIDo()) {
+            case 0:
+                saveBoard(getNameOfFileWhereToSaveBoard());
+                break;
+            case 1:
+                word = getWord();
+                if (canWordBeAddedToBoard(word)) {
+                    addWordToBoard(word);
+                }
+                break;
+            default:
+                shouldIKeepGoing = false;
+        }
+    }
 }
 
 // Asking user for size of the board
@@ -69,6 +69,7 @@ void BoardBuilder::getSize() {
             inputIsValid = false;
         }
     } while (!inputIsValid);
+    plan.push_back(to_string(dimension_x) + " x " + to_string(dimension_y));
     // That's it, we set size of board
 }
 

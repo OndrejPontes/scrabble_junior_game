@@ -10,6 +10,7 @@ class BoardBuilder {
     char board[20][20];
     std::vector<std::string> words;
     bool shouldIKeepGoing = true;
+    std::vector<std::string> plan;
 private:
     void getSize();
     void loadWords();
