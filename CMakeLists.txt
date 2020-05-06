@@ -10,7 +10,9 @@ add_executable(build_board
         BoardBuilder/build_board.cpp
         BoardBuilder/data/WORDS.TXT
         )
-
-add_executable(game
-        ScrabbleJunior/game.cpp
+        
+add_executable(scrabble_junior
+        ScrabbleJunior/scrabble_junior.cpp
+        ScrabbleJunior/ScrabbleJunior.cpp
+        ScrabbleJunior/ScrabbleJunior.h
         )
