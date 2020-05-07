@@ -6,6 +6,7 @@ using namespace std;
 #include <fstream>
 #include <string>
 #include <vector>
+#include <cstdlib>
 
 void Game::startGame() {
 	
@@ -24,8 +25,25 @@ void Game::startGame() {
 
 
 int Game::getNumberOfPlayers() {
-	cout << "Enter number of players: ";
-	cin >> numberOfPlayers;
+	int input;
+	bool keepGoing=true;
+	while (keepGoing) {
+		cout << "Enter number of players(2-4): ";
+		cin >> input;
+		// if user enter character instead of number
+		if (cin.fail()) {
+			cin.clear();
+			cin.ignore(256, '\n');
+			cout << "Please enter a valid value!\n";
+		}
+		else if ((input >= 2 && input <= 4)) {
+			numberOfPlayers = input;
+			keepGoing = false;
+		}
+		
+	}
+
+	 
 	system("CLS");
 	return numberOfPlayers;
 }
