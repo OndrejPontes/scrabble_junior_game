@@ -1,14 +1,17 @@
 #ifndef SCRABBLE_JUNIOR_GAME_SCRABBLEJUNIOR_H
 #define SCRABBLE_JUNIOR_GAME_SCRABBLEJUNIOR_H
-
+#include "struct.h"
 #include "string"
 #include "vector"
+
+
+
 
 //class Player for each player
 class Player {
 public:
     std::string name;
-    std::vector<char> playersPool;                               // with 7 tiles
+    std::vector<char> letters;                               // with 7 tiles
     int score;
 
     Player();
@@ -27,18 +30,21 @@ public:
 
 // class attributes of board e.g. pool, scoring chips
 class Board {
+
+private:
+     vector<Tile>
 public:
-     std::vector<char> pool;                  // with 101  tiles
-      int scoringChips;                              // 44 chips
-    
+    std::vector<char> pool;                  // with 101  tiles
+    int scoringChips;                              // 44 chips
 
-//private:
-      
-//public:
     Board();
-    void removeTilesFromPool(std::vector<int> toRemove);   // when player calls functions  'drawTiles' or 'updateTiles' that tiles must be removed from pool
-    void setPool(std::vector<char> &pool);
+    void loadPlan(string file);
+    char popLetter(int index);
 
+    void setPool(std::vector<char>& pool);
+    void printBoard();                                 // print board from board file.txt
+    void controlBoard();                                // after coverTiles, check if there is a completed word and print board again
+    
 };
 
 // class with all functionalities
@@ -46,14 +52,13 @@ class Game {
 public:
     int numberOfPlayers;
     std::vector<Player> players;
-    Board board;
-
-
+    Board board= Board();
+    //Game();
+    void drawTiles();
     int getNumberOfPlayers();
-    void printBoard();                                 // print board from board file.txt
     void coverTiles();                                 // check choosen player's tiles for invalid  position (if tile and letter in position are the same)
                                                        // put tile in position and change colour to red
-    void updateBoard();                                // after coverTiles, check if there is a completed word and print board again
+    
 
 
     void startGame();

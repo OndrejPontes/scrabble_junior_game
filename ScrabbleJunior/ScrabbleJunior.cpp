@@ -12,6 +12,7 @@ using namespace std;
 void Game::startGame() {
 	
 // get # of players, get names and print them
+	//getPlayers();
 	getNumberOfPlayers();
 	for (int i = 0; i < numberOfPlayers; i++) {
 		Player newPlayer= Player();
@@ -25,20 +26,17 @@ void Game::startGame() {
 
 // set pool and print it
 	cout << "\n POOL BEFORE DRAW: \n";
-
-	board.setPool(board.pool);
 	cout <<"\n" <<board.pool.size()<<"\n";
 	for (int k = 0; k < board.pool.size(); k++)
 		cout << board.pool[k] << " ";
 
 // draw tiles and print
 	cout << "\n PLAYER'S TILES: \n";
-	vector<int> toRemove= players[0].drawTiles(board.pool);
-	for(int temp=0;temp<players[0].playersPool.size();temp++)
-		cout << players[0].playersPool[temp] << " ";
-
-// remove tiles, which were draw from pool
-	board.removeTilesFromPool(toRemove);
+	drawTiles();
+	for(int temp=0;temp<players.size();temp++)
+		for (int l = 0; l < players[temp].letters.size(); l++) {
+			cout << players[temp].letters[l] << " ";
+		}
 
 // print pool after draw
 	cout <<"\n"<< board.pool.size()<<endl;
@@ -72,6 +70,7 @@ int Game::getNumberOfPlayers() {
 	system("CLS");
 	return numberOfPlayers;
 }
+
 Player::Player() {
 	name = "";
 	score = 0;
@@ -81,40 +80,36 @@ void Player::getName() {
 	cin >> name;
 }
 
+// Initialization of random letters in the pool
 Board::Board() {
 	scoringChips = 44;
-}
-
-void Board::setPool(vector<char> &pool) {
-    int numOfTiles = 101;
+	int numOfTiles = 15;
 	char letter;
 
-	srand(time(NULL));
+	srand(time(NULL));							// to make initialization random using time seed
 	for (int i = 0; i < numOfTiles; i++)
 	{
 		letter = 'a' + rand() % 26;            // Convert to a character from a-z
 		pool.push_back(letter);
 	}
-
 }
 
-vector<int> Player::drawTiles(std::vector<char> pool){
+void  Game::drawTiles(){
 	int r, numOfPlayersTile = 7;
-	vector<int> toRemove;
+
 	srand(time(NULL));
-	for (int i = 0; i < numOfPlayersTile; i++) {
-		r = rand() % pool.size();
-		playersPool.push_back(pool[r]);
-		toRemove.push_back(r);
-		cout << r << " ";
+	for(int i=0;i<players.size();i++){
+		for (int j= 0; j < numOfPlayersTile; j++) {
+			r = rand() % board.pool.size();
+			players[i].letters.push_back(board.popLetter(r));
+		}
 	}
 
-	return toRemove;
 }
 
-void Board::removeTilesFromPool(vector<int> toRemove) {
-	for(int i=0;i<toRemove.size();i++){
-		pool.erase(pool.begin() + toRemove[i]);
-	}
-
+char Board::popLetter(int index) {
+	char result;
+	result = pool[index];
+	pool.erase(pool.begin() + index);
+	return result;
 }

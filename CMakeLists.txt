@@ -15,4 +15,5 @@ add_executable(scrabble_junior
         ScrabbleJunior/scrabble_junior.cpp
         ScrabbleJunior/ScrabbleJunior.cpp
         ScrabbleJunior/ScrabbleJunior.h
+        ScrabbleJunior/struct.h
         )
