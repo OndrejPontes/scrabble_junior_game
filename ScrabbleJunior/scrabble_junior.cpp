@@ -1,4 +1,5 @@
-#include "ScrabbleJunior.h"
+#include "Game.h"
+
 
 int main() {
     Game newGame = Game();
