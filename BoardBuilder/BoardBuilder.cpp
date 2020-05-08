@@ -1,10 +1,8 @@
 #include "BoardBuilder.h"
-
-using namespace std;
-
 #include <iostream>
 #include <fstream>
 
+using namespace std;
 
 void BoardBuilder::startBuilding() {
     string word;
@@ -12,22 +10,22 @@ void BoardBuilder::startBuilding() {
     getSize();
     loadWords();
 
-//    while (shouldIKeepGoing) {
-    printBoard();
-//        switch (whatShouldIDo()) {
-//            case 0:
-//                saveBoard(getNameOfFileWhereToSaveBoard());
-//                break;
-//            case 1:
-//                word = getWord();
-//                if (canWordBeAddedToBoard(word)) {
-//                    addWordToBoard(word);
-//                }
-//                break;
-//            default:
-//                shouldIKeepGoing = false;
-//        }
-//    }
+    while (shouldIKeepGoing) {
+        printBoard();
+        switch (whatShouldIDo()) {
+            case 0:
+                saveBoard(getNameOfFileWhereToSaveBoard());
+                break;
+            case 1:
+                word = getWord();
+                if (canWordBeAddedToBoard(word)) { //TODO: this has to be changed
+                    addWordToBoard(word);
+                }
+                break;
+            default:
+                shouldIKeepGoing = false;
+        }
+    }
 }
 
 // Asking user for size of the board
@@ -81,6 +79,7 @@ void BoardBuilder::loadWords() {
         while (getline(file, str)) {
             words.push_back(str);
         }
+        file.close();
     } else {
         cout << "File WORDS.TXT wan't found";
     }
@@ -97,8 +96,47 @@ void BoardBuilder::printBoard() { // TODO: add colors and clear command line on 
             else if (y == 0)
                 cout << char(64 + x);
             else
-                cout << board[x-1][y-1];
+                cout << board[x - 1][y - 1];
         }
         cout << endl;
     }
+}
+
+// Let user decide what he wants to do.
+int BoardBuilder::whatShouldIDo() {
+    string choice;
+    do {
+        cout << "If you want to save board press: 's'" << endl;
+        cout << "If you want to add word press: 'a'" << endl;
+        cout << "If you want to exit without saving press: 'x'" << endl;
+        cout << "Your choice: ";
+
+        getline(cin, choice);
+
+        if (choice == "s")
+            return 0;
+        if (choice == "a")
+            return 1;
+        if (choice == "x")
+            return -1;
+        cout << endl << "You have to enter one of the options." << endl;
+    } while (true);
+}
+
+std::string BoardBuilder::getNameOfFileWhereToSaveBoard() {
+    string fileName;
+
+    cout << "Enter name of file (without extension): ";
+    getline(cin, fileName);
+
+    return fileName;
+}
+
+void BoardBuilder::saveBoard(string name) {
+    ofstream file(name + "txt");
+
+    for(const auto& line : plan)
+        file << line;
+
+    file.close();
 }
