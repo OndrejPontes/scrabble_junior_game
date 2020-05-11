@@ -13,8 +13,8 @@ class BoardBuilder {
 private:
     void getSize();
     void loadWords();
-    static std::string getNameOfFileWhereToSaveBoard();
-    void addWordToBoard();
+    static std::string getFileName();
+    void addWord();
     void saveBoard(const std::string& name);
     static int whatShouldIDo();
     Word createWord();
