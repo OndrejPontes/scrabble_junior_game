@@ -45,22 +45,21 @@ void Board::print() {
         coord.X = i;
         for (int j = 0; j < plan[0].size() + 1; j++) {
             coord.Y = j;
-            if (i == 0 && j == 0) {
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+            if (i == 0 && j == 0)
                 cout << ' ';
-            } else if (i == 0) {
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+            else if (i == 0)
                 cout << char(96 + j);
-            } else if (j == 0) {
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+            else if (j == 0)
                 cout << char(64 + i);
-            } else {
+            else {
                 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), plan[i - 1][j - 1].isFree ? 240 : 244);
                 cout << plan[i - 1][j - 1].letter;
             }
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
         }
         cout << endl;
     }
+    cout << endl;
 }
 
 int Board::getDimensionX() {
