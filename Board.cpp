@@ -1,6 +1,7 @@
 #include "Board.h"
 #include <windows.h>
 #include <iostream>
+#include <iterator>
 
 using namespace std;
 
@@ -25,6 +26,32 @@ void Board::addWord(const Word &word) {
         endX = word.x + 1;
         endY = word.y + (int) word.value.size();
     }
+
+    // This awful condition check if there is a character before or after, start or end of the word. If so we cannot
+    // add that word in board and error is thrown.
+    if (
+            (word.direction == Direction::V && (
+                    (word.x > 0 && plan[word.x - 1][word.y].letter != ' ') ||
+                    (endX < plan.size() && plan[endX][word.y].letter != ' ')
+            )) || (word.direction == Direction::H && (
+                    (word.y > 0 && plan[word.x][word.y - 1].letter != ' ') ||
+                    (endY < plan[0].size() && plan[word.x][endY].letter != ' ')
+            )))
+        throw logic_error("This word cannot be added due to it's edge are touching others words.");
+
+    // TODO: Check letters around
+
+    // Check intersect with other words
+    counter = 0;
+    for (int i = word.x; i < endX; i++) {
+        for (int j = word.y; j < endY; j++) {
+            if (plan[i][j].letter != ' ' && plan[i][j].letter != word.value[counter])
+                throw logic_error("The word you are entering cannot be entered due it do not match with "
+                                  "letters already at board.");
+            counter++;
+        }
+    }
+
     // Enter word into board
     for (int i = word.x; i < endX; i++) {
         for (int j = word.y; j < endY; j++) {

@@ -3,7 +3,9 @@
 
 #include <string>
 #include <utility>
-#include "vector"
+#include <ostream>
+#include <vector>
+#include "Word.h"
 
 struct Tile {
     char letter;
@@ -12,30 +14,23 @@ struct Tile {
     explicit Tile(char letter) : letter(letter) {}
 };
 
-enum class Direction {V, H};
-
-struct Word {
-    std::string value;
-    Direction direction;
-    int x = 20;
-    int y = 20;
-
-    Word() = default;
-    Word(std::string value, Direction direction, int x, int y): value{std::move(value)}, direction{direction}, x{x}, y{y} {}
-};
-
 class Board {
 private:
     std::vector<std::vector<Tile>> plan;
 
 public:
     Board() = default;
+
     Board(int x, int y);
 
     void print();
-    void addWord(const Word&);
+
+    void addWord(const Word &);
+
     void takeTile(int x, int y);
+
     int getDimensionX();
+
     int getDimensionY();
 };
 

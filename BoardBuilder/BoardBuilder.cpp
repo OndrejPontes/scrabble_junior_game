@@ -15,7 +15,7 @@ void BoardBuilder::startBuilding() {
         board.print();
         switch (whatShouldIDo()) {
             case 0:
-                saveBoard(getNameOfFileWhereToSaveBoard());
+                saveBoard(getFileName());
                 break;
 <<<<<<< HEAD
            /* case 1:
@@ -26,7 +26,7 @@ void BoardBuilder::startBuilding() {
                 break;*/
 =======
             case 1:
-                addWordToBoard();
+                addWord();
                 break;
 >>>>>>> cbf5b76815bb9f40b2511f70fb52dc886aa1bd45
             default:
@@ -113,7 +113,7 @@ int BoardBuilder::whatShouldIDo() {
     } while (true);
 }
 
-std::string BoardBuilder::getNameOfFileWhereToSaveBoard() {
+std::string BoardBuilder::getFileName() {
     string fileName;
 
     cout << "Enter name of file (without extension): ";
@@ -131,9 +131,10 @@ void BoardBuilder::saveBoard(const string &name) {
     file.close();
 }
 
-void BoardBuilder::addWordToBoard() {
+void BoardBuilder::addWord() {
     Word word;
-    bool inputIsInvalid = false;
+    bool inputIsInvalid;
+    string line;
 
     cout << "Enter word that you want to add in this format: 'Ak H EGGS'. Where first parameter is pair indicate "
             "position of first letter of the word. Second parameter is 'V' - vertical or 'H' - horizontal which "
@@ -145,6 +146,7 @@ void BoardBuilder::addWordToBoard() {
             word = createWord();
             board.addWord(word);
             inputIsInvalid = false;
+            plan.push_back(word.toString());
         } catch (const logic_error &error) {
             cout << error.what() << endl << "Try again: ";
             inputIsInvalid = true;

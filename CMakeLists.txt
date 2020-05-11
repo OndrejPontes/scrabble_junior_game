@@ -9,13 +9,17 @@ add_executable(build_board
         BoardBuilder/BoardBuilder.h
         BoardBuilder/build_board.cpp
         BoardBuilder/data/WORDS.TXT
-        Board.cpp Board.h)
-        
+        Board.cpp Board.h Word.cpp Word.h)
+
 add_executable(scrabble_junior
         ScrabbleJunior/scrabble_junior.cpp
         ScrabbleJunior/Player.cpp
         ScrabbleJunior/Game.cpp
         ScrabbleJunior/Player.h
         ScrabbleJunior/Game.h
+<<<<<<< HEAD
         ScrabbleJunior/DATA/TEST_BOARD.TXT
         )
+=======
+        Word.cpp Word.h)
+>>>>>>> f94895ad60f1b1fa797b41a4484b61a7b337cdfe
