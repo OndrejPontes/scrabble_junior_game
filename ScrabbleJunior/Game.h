@@ -9,6 +9,7 @@ public:
     int numberOfPlayers;
     std::vector<Player> players;
     Board board = Board();
+    std::vector<char> pool;
 
     void getPlayers();
     void drawTiles();
@@ -17,7 +18,8 @@ public:
                                                        // put tile in position and change colour to red
 
 
-
+    char popLetter(int index);
+    void showPool();
     void startGame();
 
 };

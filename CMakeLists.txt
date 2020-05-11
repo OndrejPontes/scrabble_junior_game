@@ -19,4 +19,5 @@ add_executable(scrabble_junior
         ScrabbleJunior/Player.h
         ScrabbleJunior/Board.h
         ScrabbleJunior/Game.h
+        ScrabbleJunior/DATA/TEST_BOARD.TXT
         )

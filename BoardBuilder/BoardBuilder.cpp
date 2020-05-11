@@ -16,12 +16,12 @@ void BoardBuilder::startBuilding() {
             case 0:
                 saveBoard(getNameOfFileWhereToSaveBoard());
                 break;
-            case 1:
+           /* case 1:
                 word = getWord();
                 if (canWordBeAddedToBoard(word)) { //TODO: this has to be changed
                     addWordToBoard(word);
                 }
-                break;
+                break;*/
             default:
                 shouldIKeepGoing = false;
         }
@@ -73,7 +73,7 @@ void BoardBuilder::getSize() {
 
 // Checking if file with words exists, loading data from WORDS.TXT file and saving it into words vector
 void BoardBuilder::loadWords() {
-    ifstream file("../BoardBuilder/data/WORDS.TXT"); // TODO: Ask if this have to be hardcoded here
+    ifstream file("../../../BoardBuilder/data/WORDS.TXT"); // TODO: Ask if this have to be hardcoded here
     string str;
     if (file) {
         while (getline(file, str)) {
