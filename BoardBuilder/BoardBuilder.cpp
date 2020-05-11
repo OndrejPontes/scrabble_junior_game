@@ -17,18 +17,16 @@ void BoardBuilder::startBuilding() {
             case 0:
                 saveBoard(getFileName());
                 break;
-<<<<<<< HEAD
-           /* case 1:
+            case 1:
                 word = getWord();
                 if (canWordBeAddedToBoard(word)) { //TODO: this has to be changed
                     addWordToBoard(word);
                 }
-                break;*/
-=======
+                break;
+
             case 1:
                 addWord();
                 break;
->>>>>>> cbf5b76815bb9f40b2511f70fb52dc886aa1bd45
             default:
                 shouldIKeepGoing = false;
         }
