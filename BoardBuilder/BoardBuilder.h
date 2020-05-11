@@ -3,24 +3,21 @@
 
 #include "string"
 #include "vector"
+#include "../Board.h"
 
 class BoardBuilder {
-    int dimension_x = 20;
-    int dimension_y = 20;
-    char board[20][20];
+    Board board;
     std::vector<std::string> words;
     bool shouldIKeepGoing = true;
     std::vector<std::string> plan;
 private:
     void getSize();
     void loadWords();
-    void printBoard();
-    std::string getWord();
-    std::string getNameOfFileWhereToSaveBoard();
-    bool canWordBeAddedToBoard(std::string);
-    void addWordToBoard(std::string);
-    void saveBoard(std::string);
-    int whatShouldIDo();
+    static std::string getNameOfFileWhereToSaveBoard();
+    void addWordToBoard();
+    void saveBoard(const std::string& name);
+    static int whatShouldIDo();
+    Word createWord();
 
 public:
     void startBuilding();

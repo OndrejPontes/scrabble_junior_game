@@ -1,6 +1,6 @@
 
 #include "Player.h"
-#include "Board.h"
+#include "../Board.h"
 #include "string"
 #include "vector"
 
@@ -11,6 +11,7 @@ public:
     Board board = Board();
     std::vector<char> pool;
 
+    Game();
     void getPlayers();
     void drawTiles();
     int getNumberOfPlayers();

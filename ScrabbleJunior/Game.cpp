@@ -12,10 +12,10 @@ void Game::startGame() {
 
 	// get # of players, get names and print them
 	getPlayers();
-	board.showPool();		// show pool before draw
+	showPool();		// show pool before draw
 	drawTiles();
-	board.showPool();		// show pool after draw
-	board.printBoard();
+	showPool();		// show pool after draw
+	board.print();
 }
 
 
@@ -60,8 +60,8 @@ void  Game::drawTiles() {
 	srand(time(NULL));
 	for (int i = 0; i < players.size(); i++) {
 		for (int j = 0; j < numOfPlayersTile; j++) {
-			r = rand() % board.pool.size();
-			players[i].letters.push_back(board.popLetter(r));
+			r = rand() % pool.size();
+			players[i].letters.push_back(popLetter(r));
 		}
 	}
 	// print player's tiles
