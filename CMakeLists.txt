@@ -9,8 +9,8 @@ add_executable(build_board
         BoardBuilder/BoardBuilder.h
         BoardBuilder/build_board.cpp
         BoardBuilder/data/WORDS.TXT
-        Board.cpp Board.h)
-        
+        Board.cpp Board.h Word.cpp Word.h)
+
 add_executable(scrabble_junior
         ScrabbleJunior/scrabble_junior.cpp
         ScrabbleJunior/Player.cpp
@@ -19,4 +19,4 @@ add_executable(scrabble_junior
         ScrabbleJunior/Player.h
         ScrabbleJunior/Board.h
         ScrabbleJunior/Game.h
-        )
+        Word.cpp Word.h)

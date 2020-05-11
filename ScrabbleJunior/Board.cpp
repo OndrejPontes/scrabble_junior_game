@@ -1,4 +1,6 @@
 #include "Board.h"
+#include "../Board.h"
+
 
 using namespace std;
 
@@ -37,4 +39,9 @@ char Board::popLetter(int index) {
 	result = pool[index];
 	pool.erase(pool.begin() + index);
 	return result;
+}
+
+
+std::string Word::toString() {
+    return std::string();
 }

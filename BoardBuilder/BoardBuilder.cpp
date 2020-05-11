@@ -137,17 +137,11 @@ void BoardBuilder::addWord() {
             word = createWord();
             board.addWord(word);
             inputIsInvalid = false;
+            plan.push_back(word.toString());
         } catch (const logic_error &error) {
             cout << error.what() << endl << "Try again: ";
             inputIsInvalid = true;
         }
-        // Adding word to plan
-        line += (char) (word.x + (int) 'A' - 1);
-        line += (char) (word.y + (int) 'a' - 1);
-        line += word.direction == Direction::V ? " V " : " H ";
-        line += word.value;
-        plan.push_back(line);
-        line = "";
     } while (inputIsInvalid);
 }
 

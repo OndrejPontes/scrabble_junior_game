@@ -1,6 +1,7 @@
 #include "Board.h"
 #include <windows.h>
 #include <iostream>
+#include <iterator>
 
 using namespace std;
 
@@ -37,6 +38,8 @@ void Board::addWord(const Word &word) {
                     (endY < plan[0].size() && plan[word.x][endY].letter != ' ')
             )))
         throw logic_error("This word cannot be added due to it's edge are touching others words.");
+
+    // TODO: Check letters around
 
     // Check intersect with other words
     counter = 0;
