@@ -17,9 +17,7 @@ add_executable(scrabble_junior
         ScrabbleJunior/Game.cpp
         ScrabbleJunior/Player.h
         ScrabbleJunior/Game.h
-<<<<<<< HEAD
         ScrabbleJunior/DATA/TEST_BOARD.TXT
-        )
-=======
-        Word.cpp Word.h)
->>>>>>> f94895ad60f1b1fa797b41a4484b61a7b337cdfe
+        Word.cpp Word.h
+        Board.cpp Board.h)
+

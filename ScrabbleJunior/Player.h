@@ -1,3 +1,5 @@
+#ifndef SCRABBLE_JUNIOR_GAME_PLAYER_H
+#define SCRABBLE_JUNIOR_GAME_PLAYER_H
 
 #include "string"
 #include "vector"
@@ -21,3 +23,4 @@ public:
     void getName();
 };
 
+#endif //SCRABBLE_JUNIOR_GAME_PLAYER_H

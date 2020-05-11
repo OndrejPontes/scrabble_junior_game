@@ -1,3 +1,5 @@
+#ifndef SCRABBLE_JUNIOR_GAME_GAME_H
+#define SCRABBLE_JUNIOR_GAME_GAME_H
 
 #include "Player.h"
 #include "../Board.h"
@@ -24,3 +26,6 @@ public:
     void startGame();
 
 };
+
+
+#endif //#ifndef SCRABBLE_JUNIOR_GAME_GAME_H
