@@ -62,3 +62,11 @@ void Board::print() {
         cout << endl;
     }
 }
+
+int Board::getDimensionX() {
+    return plan.size();
+}
+
+int Board::getDimensionY() {
+    return plan[0].size();
+}

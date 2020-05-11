@@ -26,13 +26,14 @@ class Board {
 private:
     std::vector<std::vector<Tile>> plan;
 
-    void printToPosition(std::string text, int x, int y);
 public:
     Board(int x, int y);
 
     void print();
     void addWord(const Word&);
     void takeTile(int x, int y);
+    int getDimensionX();
+    int getDimensionY();
 };
 
 #endif //SCRABBLE_JUNIOR_GAME_BOARD_H
