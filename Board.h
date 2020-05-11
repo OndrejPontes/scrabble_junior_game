@@ -27,6 +27,7 @@ private:
     std::vector<std::vector<Tile>> plan;
 
 public:
+    Board() = default;
     Board(int x, int y);
 
     void print();
