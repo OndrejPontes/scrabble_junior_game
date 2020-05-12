@@ -1,3 +1,5 @@
+#ifndef SCRABBLE_JUNIOR_GAME_PLAYER_H
+#define SCRABBLE_JUNIOR_GAME_PLAYER_H
 
 #include "string"
 #include "vector"
@@ -5,7 +7,7 @@
 class Player {
 public:
     std::string name;
-    std::vector<char> letters;                               // with 7 tiles
+    std::vector<char> letters;                                   // with 7 tiles
     int score;
 
     Player();
@@ -21,3 +23,4 @@ public:
     void getName();
 };
 
+#endif //SCRABBLE_JUNIOR_GAME_PLAYER_H

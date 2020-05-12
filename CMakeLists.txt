@@ -14,9 +14,10 @@ add_executable(build_board
 add_executable(scrabble_junior
         ScrabbleJunior/scrabble_junior.cpp
         ScrabbleJunior/Player.cpp
-        ScrabbleJunior/Board.cpp
         ScrabbleJunior/Game.cpp
         ScrabbleJunior/Player.h
-        ScrabbleJunior/Board.h
         ScrabbleJunior/Game.h
-        Word.cpp Word.h)
+        ScrabbleJunior/DATA/TEST_BOARD.TXT
+        Word.cpp Word.h
+        Board.cpp Board.h)
+

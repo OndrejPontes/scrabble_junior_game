@@ -12,9 +12,10 @@ void Game::startGame() {
 
 	// get # of players, get names and print them
 	getPlayers();
-	board.showPool();		// show pool before draw
+	showPool();		// show pool before draw
 	drawTiles();
-	board.showPool();		// show pool after draw
+	showPool();		// show pool after draw
+	board.print();
 }
 
 
@@ -59,8 +60,8 @@ void  Game::drawTiles() {
 	srand(time(NULL));
 	for (int i = 0; i < players.size(); i++) {
 		for (int j = 0; j < numOfPlayersTile; j++) {
-			r = rand() % board.pool.size();
-			players[i].letters.push_back(board.popLetter(r));
+			r = rand() % pool.size();
+			players[i].letters.push_back(popLetter(r));
 		}
 	}
 	// print player's tiles
@@ -69,5 +70,34 @@ void  Game::drawTiles() {
 		for (int l = 0; l < players[temp].letters.size(); l++) {
 			cout << players[temp].letters[l] << " ";
 		}
+
+}
+
+char Game::popLetter(int index) {
+	char result;
+	result = pool[index];
+	pool.erase(pool.begin() + index);
+	return result;
+}
+
+// Initialization of random letters in the pool
+Game::Game() {
+	int scoringChips = 44;
+	int numOfTiles = 15;
+	char letter;
+
+	srand(time(NULL));							// to make initialization random using time seed
+	for (int i = 0; i < numOfTiles; i++)
+	{
+		letter = 'a' + rand() % 26;            // Convert to a character from a-z
+		pool.push_back(letter);
+	}
+}
+
+void Game::showPool() {
+	cout << "\n OUR POOL IS: \n";
+	cout << "\nNumber of letters in pool: " << pool.size() << "\n";
+	for (int k = 0; k < pool.size(); k++)
+		cout << pool[k] << " ";
 
 }
