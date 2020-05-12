@@ -32,6 +32,8 @@ public:
     int getDimensionX();
 
     int getDimensionY();
+
+    static Board loadFromFile(const std::string &filename);
 };
 
 #endif //SCRABBLE_JUNIOR_GAME_BOARD_H

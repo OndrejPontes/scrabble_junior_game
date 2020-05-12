@@ -1,5 +1,6 @@
 #include "Board.h"
 #include "../Board.h"
+#include "../Word.h"
 
 
 using namespace std;
@@ -42,6 +43,4 @@ char Board::popLetter(int index) {
 }
 
 
-std::string Word::toString() {
-    return std::string();
-}
+

@@ -16,6 +16,7 @@ void BoardBuilder::startBuilding() {
         switch (whatShouldIDo()) {
             case 0:
                 saveBoard(getFileName());
+                shouldIKeepGoing = false;
                 break;
             case 1:
                 addWord();
@@ -114,10 +115,10 @@ std::string BoardBuilder::getFileName() {
 }
 
 void BoardBuilder::saveBoard(const string &name) {
-    ofstream file(name + "txt");
+    ofstream file(name + ".txt");
 
     for (const auto &line : plan)
-        file << line;
+        file << line << endl;
 
     file.close();
 }

@@ -15,12 +15,12 @@ struct Word {
 
     Word() = default;
 
-    Word(std::string value, Direction direction, int x, int y) : value{std::move(value)}, direction{direction}, x{x}, y{y} {}
-
-    Word(const std::string&);
+    Word(std::string value, Direction direction, int x, int y) : value{std::move(value)}, direction{direction}, x{x},
+                                                                 y{y} {}
 
     std::string toString();
-};
 
+    static Word create(std::string);
+};
 
 #endif //SCRABBLE_JUNIOR_GAME_WORD_H

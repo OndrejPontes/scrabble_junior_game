@@ -2,6 +2,8 @@
 #include <windows.h>
 #include <iostream>
 #include <iterator>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -17,7 +19,7 @@ Board::Board(int x, int y) {
 }
 
 void Board::addWord(const Word &word) {
-    int endX, endY, counter = 0;
+    int endX, endY, counter;
     // Setup position of last character of word
     if (word.direction == Direction::V) {
         endX = word.x + (int) word.value.size();
@@ -53,6 +55,7 @@ void Board::addWord(const Word &word) {
     }
 
     // Enter word into board
+    counter = 0;
     for (int i = word.x; i < endX; i++) {
         for (int j = word.y; j < endY; j++) {
             plan[i][j].letter = word.value[counter];
@@ -95,4 +98,28 @@ int Board::getDimensionX() {
 
 int Board::getDimensionY() {
     return plan[0].size();
+}
+
+Board Board::loadFromFile(const string &filename) {
+    ifstream file(filename);
+    string str;
+    vector<string> parsed;
+    Board board;
+
+    if (file) {
+        getline(file, str);
+        istringstream iss(str);
+        parsed = {
+                istream_iterator<string>(iss), {}
+        };
+        board = Board(stoi(parsed[0]), stoi(parsed[2]));
+
+        while (getline(file, str)) {
+            board.addWord(Word::create(str));
+        }
+        file.close();
+    } else {
+        cout << "File " << filename << " wasn't found";
+    }
+    return board;
 }
