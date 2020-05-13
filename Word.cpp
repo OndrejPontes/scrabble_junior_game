@@ -24,5 +24,3 @@ Word Word::create(std::string input) {
     return Word(parsed[2], parsed[1] == "V" ? Direction::V : Direction::H, (int) parsed[0][0] - (int) 'A',
                 (int) parsed[0][1] - (int) 'a');
 }
-
-

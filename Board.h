@@ -12,6 +12,8 @@ struct Tile {
     bool isFree = true;
 
     explicit Tile(char letter) : letter(letter) {}
+
+    bool isEmpty();
 };
 
 class Board {
