@@ -18,7 +18,7 @@ void Game::startGame() {
 	showPool();		
 	drawTiles();
 	showPool();		// show pool after draw
-	Board::loadFromFile(filename).print();
+	Board::loadFromFile("test").print();
 	coverTiles();
 
 }
@@ -52,34 +52,36 @@ void Game::coverTiles()
 	string line;
 	bool keepGoing=true;
 	cout << "Enter tile that you want to cover in format  'Ak T'. The first pair represents the coordinates where you want to place the tile."
-		"Second parameter is your tile.";
+		"Second parameter is your tile."<<endl;
+	cin.ignore();
 	// while user's input is not correct, user must enter tile again
-		while (keepGoing) {
+	while (keepGoing) {
 		cout << "\nYour tile: ";
-		getline(cin, line);
 		
-			istringstream iss(line);
-			parsed = {
-					istream_iterator<string>(iss), {}
-			};
+		getline(cin, line);
+		istringstream iss(line);
+		parsed = {
+				istream_iterator<string>(iss), {}
+		};
+		posX = (int)parsed[0][0] - 64;
+		posY = (int)parsed[0][1] - 96;
+		if ((parsed.size() == 2) && (parsed[0].size() == 2) && (posX >= 1) && (posX <= board.getDimensionX()) && (posY >= 1) && (posY <= board.getDimensionY())) {
 
-			if ((parsed.size() == 2) && (parsed[0].size() == 2) && (((int)parsed[0][1] >= (int)'a' && (int)parsed[0][1] < (int)'a' + board.getDimensionY() &&
-				(int)parsed[0][0] >= (int)'A' && (int)parsed[0][0] < (int)'A' + board.getDimensionX()))) {
-
-				cout << "aaaaaaa";
-				/*if (parsed[1][0]!= board.getTile((int)parsed[0][0], (int)parsed[0][1]) && (find(players[0].letters.begin(), players[0].letters.end(), parsed[1][0]) == players[0].letters.end()))
-					cout << "You can't cover this tile!";
-
-				else {
-					board.takeTile((int)parsed[0][0], (int)parsed[0][1]);
-					keepGoing = false;
-				}*/
-
+			if (parsed[1][0] != board.getTile((int)parsed[0][0], (int)parsed[0][1]) && find(players[0].letters.begin(), players[0].letters.end(), parsed[1][0])
+				== players[0].letters.end()) {
+				cout << "You can't cover this tile!";
 			}
-			else
-				cout << "Enter exactly two coordinates or check position of your tile!";
+			else {
+				board.takeTile((int)parsed[0][0], (int)parsed[0][1]);
+				keepGoing = false;
+			}
 		}
-	} 
+		else {
+			cout << " Enter excatly 2 parameters and check if parameters  do not exceeds dimensions of board! ";
+		}
+
+	}
+} 
 
 void Game::getPlayers() {
 	getNumberOfPlayers();
@@ -147,8 +149,7 @@ void Game::getSettings()
 			numOfTiles = input;
 		}
 	}
-	cout << "Please enter name of board (file without extension): ";
-	cin >> filename;
+
 }
 
 void Game::showPool() {
