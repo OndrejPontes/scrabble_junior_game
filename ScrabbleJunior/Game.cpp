@@ -3,24 +3,30 @@
 using namespace std;
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <iterator>
 #include <string>
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include <algorithm>
 
 void Game::startGame() {
 
-	// get # of players, get names and print them
+
 	getPlayers();
-	showPool();		// show pool before draw
+	showPool();		
 	drawTiles();
 	showPool();		// show pool after draw
-	board.print();
+	Board::loadFromFile(filename).print();
+	coverTiles();
+
 }
 
 int Game::getNumberOfPlayers() {
 	int input;
 	bool keepGoing = true;
+	system("CLS");
 	while (keepGoing) {
 		cout << "Enter number of players(2-4): ";
 		cin >> input;
@@ -39,6 +45,42 @@ int Game::getNumberOfPlayers() {
 	return numberOfPlayers;
 }
 
+void Game::coverTiles()
+{
+	int posX, posY;
+	vector<string> parsed;
+	string line;
+	bool keepGoing=true;
+	cout << "Enter tile that you want to cover in format  'Ak T'. The first pair represents the coordinates where you want to place the tile."
+		"Second parameter is your tile.";
+	// while user's input is not correct, user must enter tile again
+		while (keepGoing) {
+		cout << "\nYour tile: ";
+		getline(cin, line);
+		
+			istringstream iss(line);
+			parsed = {
+					istream_iterator<string>(iss), {}
+			};
+
+			if ((parsed.size() == 2) && (parsed[0].size() == 2) && (((int)parsed[0][1] >= (int)'a' && (int)parsed[0][1] < (int)'a' + board.getDimensionY() &&
+				(int)parsed[0][0] >= (int)'A' && (int)parsed[0][0] < (int)'A' + board.getDimensionX()))) {
+
+				cout << "aaaaaaa";
+				/*if (parsed[1][0]!= board.getTile((int)parsed[0][0], (int)parsed[0][1]) && (find(players[0].letters.begin(), players[0].letters.end(), parsed[1][0]) == players[0].letters.end()))
+					cout << "You can't cover this tile!";
+
+				else {
+					board.takeTile((int)parsed[0][0], (int)parsed[0][1]);
+					keepGoing = false;
+				}*/
+
+			}
+			else
+				cout << "Enter exactly two coordinates or check position of your tile!";
+		}
+	} 
+
 void Game::getPlayers() {
 	getNumberOfPlayers();
 	for (int i = 0; i < numberOfPlayers; i++) {
@@ -50,7 +92,7 @@ void Game::getPlayers() {
 	for (int j = 0; j < players.size(); j++) {
 		cout << players[j].name << " ";
 	}
-
+	system("CLS");
 }
 
 void  Game::drawTiles() {
@@ -63,13 +105,9 @@ void  Game::drawTiles() {
 			players[i].letters.push_back(popLetter(r));
 		}
 	}
-	// print player's tiles
-	cout << endl << " PLAYER'S TILES: " << endl;
-	for (int temp = 0; temp < players.size(); temp++)
-		for (int l = 0; l < players[temp].letters.size(); l++) {
-			cout << players[temp].letters[l] << " ";
-		}
+	showPlayersTiles();
 
+	
 }
 
 char Game::popLetter(int index) {
@@ -81,10 +119,8 @@ char Game::popLetter(int index) {
 
 // Initialization of random letters in the pool
 Game::Game() {
-	int scoringChips = 44;
-	int numOfTiles = 15;
+	getSettings();
 	char letter;
-
 	srand(time(NULL));							// to make initialization random using time seed
 	for (int i = 0; i < numOfTiles; i++)
 	{
@@ -93,10 +129,53 @@ Game::Game() {
 	}
 }
 
+void Game::getSettings()
+{// initialization parameters of game
+	int input;
+	bool keepGoing =true;
+	cout << "\t\tWELCOME TO SCRABBLE GAME !\nFirst of all, let's go through the game settings.\n\n";
+	while (keepGoing) {
+		cout << "How many tiles do you want to play with(Minimum value for two players is 14): ";
+		cin >> input;
+		if (cin.fail()) {
+			cin.clear();
+			cin.ignore(256, '\n');
+			cout << "Enter valid value!\n";
+		}
+		else if(input >= 14){
+			keepGoing = false;
+			numOfTiles = input;
+		}
+	}
+	cout << "Please enter name of board (file without extension): ";
+	cin >> filename;
+}
+
 void Game::showPool() {
-	cout << "\n OUR POOL IS: \n";
-	cout << "\nNumber of letters in pool: " << pool.size() << "\n";
-	for (int k = 0; k < pool.size(); k++)
-		cout << pool[k] << " ";
+	string input;
+	// with 101 letters in pool, it might be unclear in terminal
+	cout << "\nIf you want to see pool, press 'y': ";
+	cin >> input;
+	if (input == "y") {
+		cout << "OUR POOL IS: \n";
+		for (int k = 0; k < pool.size(); k++)
+			cout << pool[k] << " ";
+		cout << "\nNumber of letters in pool: " << pool.size() << "\n";
+		
+	}
 
 }
+
+void Game::showPlayersTiles()
+{
+	cout << endl << " PLAYER'S TILES: " << endl;
+		for (int temp = 0; temp < players.size(); temp++) {
+			cout << "Player " << temp << ".: ";
+			for (int l = 0; l < players[temp].letters.size(); l++) {
+				cout << players[temp].letters[l] << " ";
+
+			}
+			cout << endl;
+		}
+}
+

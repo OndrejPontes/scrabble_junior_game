@@ -15,7 +15,7 @@ public:
     std::vector<char> playTurn();                                // choose  2 tiles to play and position
                                                                  // check for invalid tiles (if player has choosen tiles in hand)
     int  updateScore();
-    void showPlayersTiles();                                     // TODO: not sure if input must be playerPool
+                                       
     void showPlayersScore();
     bool doWantPlayTurn();                                       // if player doesn't want play, change his 2 tiles from pool
 
