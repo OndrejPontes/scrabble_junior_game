@@ -8,8 +8,8 @@ using namespace std;
 // This string is in format that we are using for work in our txt files
 string Word::toString() {
     string line;
-    line = (char) (x + (int) 'A' - 1);
-    line += (char) (y + (int) 'a' - 1);
+    line = (char) (x + (int) 'A');
+    line += (char) (y + (int) 'a');
     line += direction == Direction::V ? " V " : " H ";
     line += value;
     return line;

@@ -119,7 +119,7 @@ int Board::getDimensionY() {
 }
 
 Board Board::loadFromFile(const string &filename) {
-    ifstream file(filename);
+    ifstream file("./data/" + filename + ".txt");
     string str;
     vector<string> parsed;
     Board board;
@@ -132,7 +132,7 @@ Board Board::loadFromFile(const string &filename) {
         };
         board = Board(stoi(parsed[0]), stoi(parsed[2]));
 
-        while (getline(file, str)) {
+        while (getline(file, str) && !str.empty()) {
             board.addWord(Word::create(str));
         }
         file.close();
