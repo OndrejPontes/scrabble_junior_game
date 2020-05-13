@@ -33,6 +33,8 @@ public:
 
     int getDimensionY();
 
+    char getTile(int x, int y);
+
     static Board loadFromFile(const std::string &filename);
 };
 

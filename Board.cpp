@@ -141,3 +141,7 @@ Board Board::loadFromFile(const string &filename) {
     }
     return board;
 }
+
+char Board::getTile(int x, int y) {
+    return plan[x][y].letter;
+}
