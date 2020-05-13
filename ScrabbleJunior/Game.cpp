@@ -18,7 +18,6 @@ void Game::startGame() {
 	board.print();
 }
 
-
 int Game::getNumberOfPlayers() {
 	int input;
 	bool keepGoing = true;
@@ -65,7 +64,7 @@ void  Game::drawTiles() {
 		}
 	}
 	// print player's tiles
-	cout << "\n PLAYER'S TILES: \n";
+	cout << endl << " PLAYER'S TILES: " << endl;
 	for (int temp = 0; temp < players.size(); temp++)
 		for (int l = 0; l < players[temp].letters.size(); l++) {
 			cout << players[temp].letters[l] << " ";

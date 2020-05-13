@@ -23,7 +23,7 @@ public:
 
     Board(int x, int y);
 
-    void print();
+    std::string print();
 
     void addWord(const Word &);
 

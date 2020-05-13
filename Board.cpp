@@ -68,28 +68,46 @@ void Board::takeTile(int x, int y) {
     plan[x][y].isFree = false;
 }
 
-void Board::print() {
+string Board::print() {
     COORD coord;
+    stringstream ss;
 
     for (int i = 0; i < plan.size() + 1; i++) {
         coord.X = i;
+        if (i == 1) {
+            ss << "====";
+            for (int j = 0; j < plan[0].size() + 1; j++)
+                ss << "=";
+            ss << endl;
+        }
         for (int j = 0; j < plan[0].size() + 1; j++) {
             coord.Y = j;
-            if (i == 0 && j == 0)
+            if (i == 0 && j == 0) {
                 cout << ' ';
-            else if (i == 0)
+                ss << " ||";
+            } else if (i == 0) {
                 cout << char(96 + j);
-            else if (j == 0)
+                ss << char(96 + j);
+            }
+            else if (j == 0) {
                 cout << char(64 + i);
-            else {
+                ss << char(64 + i) << "||";
+            } else {
                 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), plan[i - 1][j - 1].isFree ? 240 : 244);
                 cout << plan[i - 1][j - 1].letter;
+                ss << plan[i - 1][j - 1].letter;
             }
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
         }
         cout << endl;
+        ss << "||" << endl;
     }
     cout << endl;
+
+    for (int j = 0; j < plan[0].size() + 5; j++)
+        ss << "=";
+
+    return ss.str();
 }
 
 int Board::getDimensionX() {

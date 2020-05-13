@@ -19,13 +19,6 @@ void BoardBuilder::startBuilding() {
                 shouldIKeepGoing = false;
                 break;
             case 1:
-                word = getWord();
-                if (canWordBeAddedToBoard(word)) { //TODO: this has to be changed
-                    addWordToBoard(word);
-                }
-                break;
-
-            case 1:
                 addWord();
                 break;
             default:
@@ -62,12 +55,12 @@ void BoardBuilder::getSize() {
             inputIsValid = false;
             continue;
         } catch (const out_of_range &) {
-            cout << "Input is invalid. Numbers has to be in range from 0 to 20." << endl;
+            cout << "Input is invalid. Numbers has to be in range from 1 to 20." << endl;
             inputIsValid = false;
             continue;
         }
-        if (x < 0 || x > 20 || y < 0 || y > 20) {
-            cout << "Input is invalid. Numbers has to be in range from 0 to 20." << endl;
+        if (x <= 0 || x > 20 || y <= 0 || y > 20) {
+            cout << "Input is invalid. Numbers has to be in range from 1 to 20." << endl;
             inputIsValid = false;
         }
     } while (!inputIsValid);
@@ -79,7 +72,7 @@ void BoardBuilder::getSize() {
 
 // Checking if file with words exists, loading data from WORDS.TXT file and saving it into words vector
 void BoardBuilder::loadWords() {
-    ifstream file("../../../BoardBuilder/data/WORDS.TXT"); // TODO: Ask if this have to be hardcoded here
+    ifstream file("./data/WORDS.TXT"); // TODO: Ask if this have to be hardcoded here
     string str;
     if (file) {
         while (getline(file, str)) {
@@ -98,7 +91,7 @@ int BoardBuilder::whatShouldIDo() {
         cout << "If you want to save board press: 's'" << endl;
         cout << "If you want to add word press: 'a'" << endl;
         cout << "If you want to exit without saving press: 'x'" << endl;
-        cout << "Your choice: ";
+        cout << "Your options: ";
 
         getline(cin, choice);
 
@@ -122,11 +115,12 @@ std::string BoardBuilder::getFileName() {
 }
 
 void BoardBuilder::saveBoard(const string &name) {
-    ofstream file(name + ".txt");
+    ofstream file("./data/" + name + ".txt");
 
     for (const auto &line : plan)
         file << line << endl;
 
+    file << endl << board.print();
     file.close();
 }
 
