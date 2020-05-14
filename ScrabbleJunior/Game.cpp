@@ -17,6 +17,7 @@ void Game::startGame() {
     // Setup everything
     getPlayers();
     loadBoard();
+    board.print();
     preparePool();
     prepareTilesForPlayers();
 
@@ -178,75 +179,16 @@ bool Game::gameDoesntHaveWinner() {
 //
 //    }
 //}
-//
-//void Game::drawTiles() {
-//    int r, numOfPlayersTile = 7;
-//
-//    srand(time(NULL));
-//    for (int i = 0; i < players.size(); i++) {
-//        for (int j = 0; j < numOfPlayersTile; j++) {
-//            r = rand() % pool.size();
-//            players[i].letters.push_back(popLetter(r));
-//        }
-//    }
-//    showPlayersTiles();
-//
-//
-//}
-//
-//// Initialization of random letters in the pool
-//Game::Game() {
-//    getSettings();
-//    char letter;
-//    srand(time(NULL));                            // to make initialization random using time seed
-//    for (int i = 0; i < numOfTiles; i++) {
-//        letter = 'a' + rand() % 26;            // Convert to a character from a-z
-//        pool.push_back(letter);
-//    }
-//}
-//
-//void Game::getSettings() {// initialization parameters of game
-//    int input;
-//    bool keepGoing = true;
-//    cout << "\t\tWELCOME TO SCRABBLE GAME !\nFirst of all, let's go through the game settings.\n\n";
-//    while (keepGoing) {
-//        cout << "How many tiles do you want to play with(Minimum value for two players is 14): ";
-//        cin >> input;
-//        if (cin.fail()) {
-//            cin.clear();
-//            cin.ignore(256, '\n');
-//            cout << "Enter valid value!\n";
-//        } else if (input >= 14) {
-//            keepGoing = false;
-//            numOfTiles = input;
-//        }
-//    }
-//
-//}
-//
-//void Game::showPool() {
-//    string input;
-//    // with 101 letters in pool, it might be unclear in terminal
-//    cout << "\nIf you want to see pool, press 'y': ";
-//    cin >> input;
-//    if (input == "y") {
-//        cout << "OUR POOL IS: \n";
-//        for (int k = 0; k < pool.size(); k++)
-//            cout << pool[k] << " ";
-//        cout << "\nNumber of letters in pool: " << pool.size() << "\n";
-//
-//    }
-//
-//}
+
 //
 //void Game::showPlayersTiles() {
-//    cout << endl << " PLAYER'S TILES: " << endl;
-//    for (int temp = 0; temp < players.size(); temp++) {
-//        cout << "Player " << temp << ".: ";
-//        for (int l = 0; l < players[temp].letters.size(); l++) {
-//            cout << players[temp].letters[l] << " ";
+//   cout << endl << " player's tiles: " << endl;
+//   for (int temp = 0; temp < players.size(); temp++) {
+//     cout << "player " << temp << ".: ";
+//     for (int l = 0; l < Player::players[temp].letters.size(); l++) {
+//       cout << players[temp].letters[l] << " ";
 //
-//        }
-//        cout << endl;
+//       }
+//       cout << endl;
 //    }
 //}
