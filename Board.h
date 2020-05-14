@@ -17,7 +17,7 @@ struct Tile {
 };
 
 class Board {
-//private:
+private:
     std::vector<std::vector<Tile>> plan;
 
 public:

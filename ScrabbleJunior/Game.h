@@ -3,14 +3,14 @@
 
 #include "Player.h"
 #include "../Board.h"
-#include "string"
-#include "vector"
+#include <string>
+#include <vector>
 
 class Game {
 public:
     int numberOfPlayers, numOfTiles;
     std::vector<Player> players;
-    Board board = Board();
+    Board board;
     std::vector<char> pool;
     std::string filename;
 

@@ -1,4 +1,6 @@
 #include "Game.h"
+#include "../Board.h"
+#include "../Word.h"
 
 using namespace std;
 #include <iostream>
@@ -18,7 +20,9 @@ void Game::startGame() {
 	showPool();		
 	drawTiles();
 	showPool();		// show pool after draw
-	Board::loadFromFile("test").print();
+	board = Board::loadFromFile("test");
+	board.print();
+	cout <<board.getDimensionX()<<endl;
 	coverTiles();
 
 }
@@ -65,14 +69,13 @@ void Game::coverTiles()
 		};
 		posX = (int)parsed[0][0] - 64;
 		posY = (int)parsed[0][1] - 96;
-		if ((parsed.size() == 2) && (parsed[0].size() == 2) && (posX >= 1) && (posX <= board.getDimensionX()) && (posY >= 1) && (posY <= board.getDimensionY())) {
+		if (((posX >= 1) && (posX <= 10 )) && ((posY >= 1) && (posY <= 10))) {
 
-			if (parsed[1][0] != board.getTile((int)parsed[0][0], (int)parsed[0][1]) && find(players[0].letters.begin(), players[0].letters.end(), parsed[1][0])
-				== players[0].letters.end()) {
+			if (parsed[1][0] != board.getTile(posX, posY) || ( find(players[0].letters.begin(), players[0].letters.end(), parsed[1][0]) == players[0].letters.end())) {
 				cout << "You can't cover this tile!";
 			}
 			else {
-				board.takeTile((int)parsed[0][0], (int)parsed[0][1]);
+				board.takeTile(posX, posX);
 				keepGoing = false;
 			}
 		}
@@ -126,7 +129,7 @@ Game::Game() {
 	srand(time(NULL));							// to make initialization random using time seed
 	for (int i = 0; i < numOfTiles; i++)
 	{
-		letter = 'a' + rand() % 26;            // Convert to a character from a-z
+		letter = 'A' + rand() % 26;            // Convert to a character from a-z
 		pool.push_back(letter);
 	}
 }
