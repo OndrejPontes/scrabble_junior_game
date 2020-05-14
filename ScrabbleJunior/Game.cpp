@@ -12,8 +12,6 @@ using namespace std;
 #include <algorithm>
 
 void Game::startGame() {
-
-
 	getPlayers();
 	showPool();		
 	drawTiles();
@@ -178,4 +176,3 @@ void Game::showPlayersTiles()
 			cout << endl;
 		}
 }
-
