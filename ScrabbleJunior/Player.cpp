@@ -38,6 +38,7 @@ void Player::printLetters() {
     cout << "Player " << name << " has these letters: ";
     for(auto &letter : letters)
         cout << letter << " ";
+    cout << endl;
 }
 
 const std::vector<char> &Player::getLetters() const {

@@ -22,7 +22,7 @@ void Game::startGame() {
     do {
         players[activePlayerIndex].printLetters();
         coverTiles();
-        activePlayerIndex = activePlayerIndex++ % players.size();
+        //activePlayerIndex = activePlayerIndex++ % players.size();
     } while (gameDoesntHaveWinner());
 }
 
@@ -137,59 +137,44 @@ bool Game::gameDoesntHaveWinner() {
     }
 
     return totalScore < board.getWordCount() && pool.size() != 0;
+
 }
 
+void Game::coverTiles() {
+    int posX, posY;
+    vector<string> parsed;
+    string line;
+    bool keepGoing = true;
+    int count = 0;
+    cout<< "Enter  position of tile that you want to cover in format  'Ak'"<< endl;
+ 
+    // while user's input is not correct, user must enter tile again
+    while (keepGoing) {
+        
+        cout << "Your tile: ";
+        getline(cin, line);
+        istringstream iss(line);
+        parsed = {
+                istream_iterator<string>(iss), {}
+        };
+        posX = (int) parsed[0][0] - 65; 
+        posY = (int) parsed[0][1] - 97;
+        // we assume user knows where he can cover tile and where he can't
+        // so we just check if he has tile in his pool
+        if (find(players[activePlayerIndex].getLetters().begin(), players[activePlayerIndex].getLetters().end(), board.getTile(posX, posY)) == players[activePlayerIndex].getLetters().end()) {
+             cout << "You can't cover this tile!";
+        }
+        
+        else  {
+            
+            board.takeTile(posX,posY);
+            board.print();
+            count++;
+            if (count == 2)
+                keepGoing = false;
+        }
 
-// Od tialto som s tym nic nerobil
-//
-//void Game::coverTiles() {
-//    int posX, posY;
-//    vector<string> parsed;
-//    string line;
-//    bool keepGoing = true;
-//    cout
-//            << "Enter tile that you want to cover in format  'Ak T'. The first pair represents the coordinates where you want to place the tile."
-//               "Second parameter is your tile." << endl;
-//    cin.ignore();
-//    // while user's input is not correct, user must enter tile again
-//    while (keepGoing) {
-//        cout << "\nYour tile: ";
-//
-//        getline(cin, line);
-//        istringstream iss(line);
-//        parsed = {
-//                istream_iterator<string>(iss), {}
-//        };
-//        posX = (int) parsed[0][0] - 64;
-//        posY = (int) parsed[0][1] - 96;
-//        if ((parsed.size() == 2) && (parsed[0].size() == 2) && (posX >= 1) && (posX <= board.getDimensionX()) &&
-//            (posY >= 1) && (posY <= board.getDimensionY())) {
-//
-//            if (parsed[1][0] != board.getTile((int) parsed[0][0], (int) parsed[0][1]) &&
-//                find(players[0].letters.begin(), players[0].letters.end(), parsed[1][0])
-//                == players[0].letters.end()) {
-//                cout << "You can't cover this tile!";
-//            } else {
-//                board.takeTile((int) parsed[0][0], (int) parsed[0][1]);
-//                keepGoing = false;
-//            }
-//        } else {
-//            cout << " Enter excatly 2 parameters and check if parameters  do not exceeds dimensions of board! ";
-//        }
-//
-//    }
-//}
+    }
+}
 
-//
-//void Game::showPlayersTiles() {
-//   cout << endl << " player's tiles: " << endl;
-//   for (int temp = 0; temp < players.size(); temp++) {
-//     cout << "player " << temp << ".: ";
-//     for (int l = 0; l < Player::players[temp].letters.size(); l++) {
-//       cout << players[temp].letters[l] << " ";
-//
-//       }
-//       cout << endl;
-//    }
-//}
 

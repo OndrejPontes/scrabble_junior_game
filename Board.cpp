@@ -169,7 +169,8 @@ Board Board::loadFromFile(const string &filename) {
         file.close();
     } else {
         throw logic_error("File: ./data/ " + filename + ".txt wasn't found");
-    }
+
+        }   
     return board;
 }
 
