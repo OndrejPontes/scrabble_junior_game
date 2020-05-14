@@ -12,7 +12,7 @@ private:
     std::vector<Player> players;
     Board board;
     Pool pool;
-    int activePlayerIndex;
+    int activePlayerIndex = 0;
 
     void getPlayers();
 
@@ -24,19 +24,9 @@ private:
 
     bool gameDoesntHaveWinner();
 
-    void getSettings();
-
-    void drawTiles();
-
     int getNumberOfPlayers();
 
     void coverTiles();
-
-    void controlBoard();
-
-    void showPool();
-
-    void showPlayersTiles();
 
 public:
     void startGame();

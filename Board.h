@@ -19,6 +19,7 @@ struct Tile {
 class Board {
 private:
     std::vector<std::vector<Tile>> plan;
+    int wordsCount = 0;
 
 public:
     Board() = default;
@@ -40,6 +41,8 @@ public:
     std::vector<char> getDefaultPool();
 
     static Board loadFromFile(const std::string &filename);
+
+    int getWordCount();
 };
 
 #endif //SCRABBLE_JUNIOR_GAME_BOARD_H
