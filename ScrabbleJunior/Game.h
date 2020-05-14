@@ -3,32 +3,45 @@
 
 #include "Player.h"
 #include "../Board.h"
-#include <string>
-#include <vector>
+#include "string"
+#include "vector"
+#include "Pool.h"
 
 class Game {
-public:
-    int numberOfPlayers, numOfTiles;
+private:
     std::vector<Player> players;
-    Board board;
-    std::vector<char> pool;
-    std::string filename;
+    Board board = Board();
+    Pool pool;
+    Player activePlayer;
 
-    Game();
-    void getSettings();
     void getPlayers();
+
+    void loadBoard();
+
+    void preparePool();
+
+    void prepareTilesForPlayers();
+
+    bool gameDoesntHaveWinner();
+
+    void getSettings();
+
     void drawTiles();
+
     int getNumberOfPlayers();
-    void coverTiles();                                 // check choosen player's tiles for invalid  position (if tile and letter in position are the same)
-                                                       // put tile in position and change colour to red
+
+    void coverTiles();
 
     void controlBoard();
-    char popLetter(int index);
+
     void showPool();
+
     void showPlayersTiles();
+
+public:
     void startGame();
 
+    Game();
 };
-
 
 #endif //#ifndef SCRABBLE_JUNIOR_GAME_GAME_H

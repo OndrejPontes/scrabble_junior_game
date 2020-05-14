@@ -5,22 +5,19 @@
 #include "vector"
 
 class Player {
-public:
+private:
     std::string name;
-    std::vector<char> letters;                                   // with 7 tiles
-    int score;
+    std::vector<char> letters;
+    int score = 0;
 
-    Player();
-    std::vector<char> updateTiles();                             // check if player has 7 tiles,after his turn it will update #ofHisTiles
-    std::vector<char> playTurn();                                // choose  2 tiles to play and position
-                                                                 // check for invalid tiles (if player has choosen tiles in hand)
-    int  updateScore();
-                                       
-    void showPlayersScore();
-    bool doWantPlayTurn();                                       // if player doesn't want play, change his 2 tiles from pool
+public:
+    Player(int i);
 
+    std::string getName();
 
-    void getName();
+    void addLetter(const char &letter);
+
+    void removeLetter(char letter);
 };
 
 #endif //SCRABBLE_JUNIOR_GAME_PLAYER_H
