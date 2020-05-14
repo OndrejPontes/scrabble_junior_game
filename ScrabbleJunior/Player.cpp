@@ -25,3 +25,17 @@ void Player::removeLetter(char letter) {
         throw logic_error("Letter '" + to_string(letter) + "' that you want to delete for player " + name +
                           " is not in his/her letters.");
 }
+
+int Player::getScore() {
+    return score;
+}
+
+void Player::increaseScore(int toAdd) {
+    score += toAdd;
+}
+
+void Player::printLetters() {
+    cout << "Player " << name << " has these letters: ";
+    for(auto &letter : letters)
+        cout << letter << " ";
+}

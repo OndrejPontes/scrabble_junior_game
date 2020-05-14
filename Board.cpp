@@ -92,6 +92,8 @@ void Board::addWord(const Word &word, bool check) {
             counter++;
         }
     }
+
+    wordsCount++;
 }
 
 void Board::takeTile(int x, int y) {
@@ -184,6 +186,10 @@ std::vector<char> Board::getDefaultPool() {
                 defaultPool.push_back(tile.letter);
 
     return defaultPool;
+}
+
+int Board::getWordCount() {
+    return wordsCount;
 }
 
 bool Tile::isEmpty() {

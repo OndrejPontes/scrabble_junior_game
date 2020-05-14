@@ -21,15 +21,11 @@ void Game::startGame() {
     prepareTilesForPlayers();
 
     // Start playing
-//    do {
-//
-//    } while(gameDoesntHaveWinner());
-//
-//    drawTiles();
-//    showPool();        // show pool after draw
-//    Board::loadFromFile("test").print();
-//    coverTiles();
-
+    do {
+        players[activePlayerIndex].printLetters();
+        coverTiles();
+        activePlayerIndex = activePlayerIndex++ % players.size();
+    } while (gameDoesntHaveWinner());
 }
 
 void Game::getPlayers() {
@@ -136,7 +132,13 @@ void Game::prepareTilesForPlayers() {
 }
 
 bool Game::gameDoesntHaveWinner() {
-    throw logic_error("Not implemented"); // TODO: finish this
+    int totalScore = 0;
+
+    for (auto player : players) {
+        totalScore = +player.getScore();
+    }
+
+    return totalScore < board.getWordCount() && pool.size() != 0;
 }
 
 // Od tialto som s tym nic nerobil

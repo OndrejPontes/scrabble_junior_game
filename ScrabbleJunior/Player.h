@@ -18,6 +18,12 @@ public:
     void addLetter(const char &letter);
 
     void removeLetter(char letter);
+
+    int getScore();
+
+    void increaseScore(int toAdd);
+
+    void printLetters();
 };
 
 #endif //SCRABBLE_JUNIOR_GAME_PLAYER_H
