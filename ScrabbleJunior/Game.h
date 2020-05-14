@@ -5,23 +5,39 @@
 #include "../Board.h"
 #include "string"
 #include "vector"
+#include "Pool.h"
 
 class Game {
 private:
-    int numberOfPlayers, numOfTiles;
     std::vector<Player> players;
     Board board = Board();
-    std::vector<char> pool;
-    std::string filename;
-    void getSettings();
+    Pool pool;
+    Player activePlayer;
+
     void getPlayers();
+
+    void loadBoard();
+
+    void preparePool();
+
+    void prepareTilesForPlayers();
+
+    bool gameDoesntHaveWinner();
+
+    void getSettings();
+
     void drawTiles();
+
     int getNumberOfPlayers();
-    void coverTiles();                                 // check choosen player's tiles for invalid  position (if tile and letter in position are the same)
+
+    void coverTiles();
+
     void controlBoard();
-    char popLetter(int index);
+
     void showPool();
+
     void showPlayersTiles();
+
 public:
     void startGame();
 

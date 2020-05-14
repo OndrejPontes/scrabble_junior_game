@@ -17,7 +17,7 @@ struct Tile {
 };
 
 class Board {
-//private:
+private:
     std::vector<std::vector<Tile>> plan;
 
 public:
@@ -27,7 +27,7 @@ public:
 
     std::string print();
 
-    void addWord(const Word&);
+    void addWord(const Word &);
 
     void takeTile(int x, int y);
 
@@ -37,7 +37,9 @@ public:
 
     char getTile(int x, int y);
 
-    static Board loadFromFile(const std::string& filename);
+    std::vector<char> getDefaultPool();
+
+    static Board loadFromFile(const std::string &filename);
 };
 
 #endif //SCRABBLE_JUNIOR_GAME_BOARD_H

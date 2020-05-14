@@ -28,5 +28,5 @@ add_executable(scrabble_junior
         Word.h
         Board.cpp
         Board.h
-        )
+        ScrabbleJunior/Pool.cpp ScrabbleJunior/Pool.h)
 
