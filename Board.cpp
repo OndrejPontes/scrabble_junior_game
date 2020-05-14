@@ -20,7 +20,7 @@ Board::Board(int x, int y) {
 
 // This function handle a lot of checks if word that user is adding will fit the plan. For any question don't hesitate
 // to contact me, because it is hard to explain just with small comment. However, I think it is wrote as simple as possible.
-void Board::addWord(const Word &word) {
+void Board::addWord(const Word &word, bool check) {
     int endX, endY, counter;
     // Setup position of last character of word
     if (word.direction == Direction::V) {
@@ -31,41 +31,45 @@ void Board::addWord(const Word &word) {
         endY = word.y + (int) word.value.size();
     }
 
-    // This awful condition check if there is a character before or after, start or end of the word. If so we cannot
-    // add that word in board and error is thrown.
-    if (
-            (word.direction == Direction::V && (
-                    (word.x > 0 && !plan[word.x - 1][word.y].isEmpty()) ||
-                    (endX < plan.size() && !plan[endX][word.y].isEmpty())
-            )) || (word.direction == Direction::H && (
-                    (word.y > 0 && !plan[word.x][word.y - 1].isEmpty()) ||
-                    (endY < plan[0].size() && !plan[word.x][endY].isEmpty())
-            )))
-        throw logic_error("This word cannot be added due to it's edge are touching others words.");
+    if(check) {
+        // This awful condition check if there is a character before or after, start or end of the word. If so we cannot
+        // add that word in board and error is thrown.
+        if (
+                (word.direction == Direction::V && (
+                        (word.x > 0 && !plan[word.x - 1][word.y].isEmpty()) ||
+                        (endX < plan.size() && !plan[endX][word.y].isEmpty())
+                )) || (word.direction == Direction::H && (
+                        (word.y > 0 && !plan[word.x][word.y - 1].isEmpty()) ||
+                        (endY < plan[0].size() && !plan[word.x][endY].isEmpty())
+                )))
+            throw logic_error("This word cannot be added due to it's edge are touching others words.");
 
-    // This horrible thing check if there are any characters next to currently added word. If so, there has to be
-    // a character on place where we want to add a word.
-    if (word.direction == Direction::H) {
-        if (word.x - 1 >= 0) {
-            for (int i = word.y; i < word.y + word.value.size(); i++)
-                if (!plan[word.x - 1][i].isEmpty() && plan[word.x][i].isEmpty())
-                    throw logic_error("This word cannot be added due to it's edge are touching others words.");
-        }
-        if (word.x + 1 < plan.size()) {
-            for (int i = word.y; i < word.y + word.value.size(); i++)
-                if (!plan[word.x + 1][i].isEmpty() && plan[word.x][i].isEmpty())
-                    throw logic_error("This word cannot be added due to it's edge are touching others words.");
-        }
-    } else {
-        if (word.y - 1 >= 0) {
-            for (int i = word.x; i < word.x + word.value.size(); i++)
-                if (!plan[i][word.y - 1].isEmpty() && plan[i][word.y].isEmpty())
-                    throw logic_error("This word cannot be added due to it's edge are touching others words.");
-        }
-        if (word.y + 1 < plan[0].size()) {
-            for (int i = word.x; i < word.x + word.value.size(); i++)
-                if (!plan[i][word.y + 1].isEmpty() && plan[i][word.y].isEmpty())
-                    throw logic_error("This word cannot be added due to it's edge are touching others words.");
+        // This horrible thing check if there are any characters next to currently added word. If so, there has to be
+        // a character on place where we want to add a word.
+        if (word.direction == Direction::H) {
+            if (word.x - 1 >= 0) {
+                for (int i = word.y; i < word.y + word.value.size(); i++) {
+                    if (!plan[word.x - 1][i].isEmpty() && plan[word.x][i].isEmpty())
+                        throw logic_error(
+                                "This word cannot be added due to it's edge are touching others words.");
+                }
+            }
+            if (word.x + 1 < plan.size()) {
+                for (int i = word.y; i < word.y + word.value.size(); i++)
+                    if (!plan[word.x + 1][i].isEmpty() && plan[word.x][i].isEmpty())
+                        throw logic_error("This word cannot be added due to it's edge are touching others words.");
+            }
+        } else {
+            if (word.y - 1 >= 0) {
+                for (int i = word.x; i < word.x + word.value.size(); i++)
+                    if (!plan[i][word.y - 1].isEmpty() && plan[i][word.y].isEmpty())
+                        throw logic_error("This word cannot be added due to it's edge are touching others words.");
+            }
+            if (word.y + 1 < plan[0].size()) {
+                for (int i = word.x; i < word.x + word.value.size(); i++)
+                    if (!plan[i][word.y + 1].isEmpty() && plan[i][word.y].isEmpty())
+                        throw logic_error("This word cannot be added due to it's edge are touching others words.");
+            }
         }
     }
 
@@ -158,7 +162,7 @@ Board Board::loadFromFile(const string &filename) {
         board = Board(stoi(parsed[0]), stoi(parsed[2]));
 
         while (getline(file, str) && !str.empty()) {
-            board.addWord(Word::create(str));
+            board.addWord(Word::create(str), false);
         }
         file.close();
     } else {
@@ -176,7 +180,8 @@ std::vector<char> Board::getDefaultPool() {
 
     for(auto & row : plan)
         for(auto & tile : row)
-            defaultPool.push_back(tile.letter);
+            if(!tile.isEmpty())
+                defaultPool.push_back(tile.letter);
 
     return defaultPool;
 }

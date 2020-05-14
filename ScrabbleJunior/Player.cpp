@@ -23,5 +23,5 @@ void Player::removeLetter(char letter) {
         letters.erase(it);
     else
         throw logic_error("Letter '" + to_string(letter) + "' that you want to delete for player " + name +
-                          " is not in his/her letters.")
+                          " is not in his/her letters.");
 }

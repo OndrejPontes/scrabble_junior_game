@@ -27,7 +27,7 @@ public:
 
     std::string print();
 
-    void addWord(const Word &);
+    void addWord(const Word &word, bool check = true);
 
     void takeTile(int x, int y);
 

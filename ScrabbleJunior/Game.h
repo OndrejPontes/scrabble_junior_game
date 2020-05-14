@@ -10,9 +10,9 @@
 class Game {
 private:
     std::vector<Player> players;
-    Board board = Board();
+    Board board;
     Pool pool;
-    Player activePlayer;
+    int activePlayerIndex;
 
     void getPlayers();
 
@@ -40,8 +40,6 @@ private:
 
 public:
     void startGame();
-
-    Game();
 };
 
 #endif //#ifndef SCRABBLE_JUNIOR_GAME_GAME_H
