@@ -18,6 +18,9 @@ void Game::startGame() {
     preparePool();
     prepareTilesForPlayers();
 
+    // TODO: vo funcii coverTile: hrac vyberie tile, ktory chce zakrit vymaze sa mu z jeho poolu
+    // NEFUNGUJE prepinanie hracov, vzdy hodi prveho hraca
+    // TREBA dorobit pocitanie skore a aktualizovanie hracovho poolu po tom ako zakryje policko
     // Start playing
     do {
         players[activePlayerIndex].printLetters();
@@ -166,9 +169,11 @@ void Game::coverTiles() {
         }
         
         else  {
-            
+            // after covering tile => letter is became red and the letter is removed from player's pool
+            // player can go maximum 2 times
             board.takeTile(posX,posY);
             board.print();
+            players[activePlayerIndex].removeLetter(board.getTile(posX, posY));
             count++;
             if (count == 2)
                 keepGoing = false;
