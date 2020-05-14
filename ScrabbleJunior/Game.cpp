@@ -3,13 +3,10 @@
 using namespace std;
 
 #include <iostream>
-#include <fstream>
 #include <sstream>
 #include <iterator>
 #include <string>
 #include <vector>
-#include <cstdlib>
-#include <ctime>
 #include <algorithm>
 #include <random>
 
@@ -142,6 +139,7 @@ bool Game::gameDoesntHaveWinner() {
     return totalScore < board.getWordCount() && pool.size() != 0;
 }
 
+
 // Od tialto som s tym nic nerobil
 //
 //void Game::coverTiles() {
@@ -194,3 +192,4 @@ bool Game::gameDoesntHaveWinner() {
 //       cout << endl;
 //    }
 //}
+

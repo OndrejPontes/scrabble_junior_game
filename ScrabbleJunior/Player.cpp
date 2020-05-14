@@ -39,3 +39,9 @@ void Player::printLetters() {
     for(auto &letter : letters)
         cout << letter << " ";
 }
+
+const std::vector<char> &Player::getLetters() const {
+    return letters;
+}
+
+
