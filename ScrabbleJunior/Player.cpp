@@ -6,7 +6,7 @@ using namespace std;
 
 Player::Player(int i) {
     cout << to_string(i + 1) << ". player name: ";
-    cin >> name;
+    getline(cin, name);
 }
 
 std::string Player::getName() {
