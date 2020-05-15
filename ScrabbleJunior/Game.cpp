@@ -17,7 +17,6 @@ void Game::startGame() {
     board.print();
     preparePool();
     prepareTilesForPlayers();
-
     // TODO: vo funcii coverTile: hrac vyberie tile, ktory chce zakrit vymaze sa mu z jeho poolu
     // TREBA dorobit aktualizovanie hracovho poolu po tom ako zakryje policko
     // Start playing
@@ -143,9 +142,55 @@ bool Game::gameDoesntHaveWinner() {
 }
 
 void Game::coverTiles() {
+    int posX, posY;
+    vector<string> parsed;
+    string line;
+    bool keepGoing = true;
+    int count = 0;
+    cout << "Enter  position of tile that you want to cover in format  'Ak'" << endl;
 
-    // Update user score
+    // while user's input is not correct, user must enter tile again
+    while (keepGoing) {
+
+        cout << "Your tile: ";
+        getline(cin, line);
+        istringstream iss(line);
+        parsed = {
+                istream_iterator<string>(iss), {}
+        };
+        posX = (int) parsed[0][0] - 65;
+        posY = (int) parsed[0][1] - 97;
+        // we assume user knows where he can cover tile and where he can't
+        // so we just check if he has tile in his pool
+        // player can't cover a letter that is already covered
+        if ((board.isAlreadyCovered(posX, posY) == true) ||
+            find(players[activePlayerIndex].getLetters().begin(), players[activePlayerIndex].getLetters().end(),
+                 board.getTile(posX, posY)) == players[activePlayerIndex].getLetters().end()) {
+            cout << "You can't cover this tile!";
+        } else {
+            // after covering tile => letter is became red and the letter is removed from player's pool
+            // player can go maximum 2 times
+            board.takeTile(posX, posY);
+            board.print();
+            players[activePlayerIndex].removeLetter(board.getTile(posX, posY));
+            updateTilesForPlayers();
+            count++;
+            if (count == 2)
+                keepGoing = false;
+        }
+    }
     players[activePlayerIndex].increaseScore(board.getNumberOfLatestCoveredWords());
+}
+
+void Game::updateTilesForPlayers() {
+    random_device rd;
+    mt19937 mt(rd());
+    uniform_int_distribution<int> dist;
+
+    for (int i = 0; i < 7 - players[activePlayerIndex].getLetters().size(); i++) {
+        dist = uniform_int_distribution(0, pool.size() - 1);
+        players[activePlayerIndex].addLetter(pool.popLetter(dist(mt)));
+    }
 }
 
 

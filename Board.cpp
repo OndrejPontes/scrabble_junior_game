@@ -226,6 +226,10 @@ int Board::getNumberOfLatestCoveredWords() {
     return result;
 }
 
+bool Board::isAlreadyCovered(int x, int y) {
+    return !plan[x][y].isFree;
+}
+
 bool Tile::isEmpty() {
     return letter == ' ';
 }
