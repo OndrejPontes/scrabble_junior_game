@@ -19,13 +19,12 @@ void Game::startGame() {
     prepareTilesForPlayers();
 
     // TODO: vo funcii coverTile: hrac vyberie tile, ktory chce zakrit vymaze sa mu z jeho poolu
-    // NEFUNGUJE prepinanie hracov, vzdy hodi prveho hraca
-    // TREBA dorobit pocitanie skore a aktualizovanie hracovho poolu po tom ako zakryje policko
+    // TREBA dorobit aktualizovanie hracovho poolu po tom ako zakryje policko
     // Start playing
     do {
         players[activePlayerIndex].printLetters();
         coverTiles();
-        activePlayerIndex = activePlayerIndex++ % players.size();
+        activePlayerIndex = (activePlayerIndex + 1) % players.size();
     } while (gameDoesntHaveWinner());
 }
 
@@ -144,42 +143,9 @@ bool Game::gameDoesntHaveWinner() {
 }
 
 void Game::coverTiles() {
-    int posX, posY;
-    vector<string> parsed;
-    string line;
-    bool keepGoing = true;
-    int count = 0;
-    cout<< "Enter  position of tile that you want to cover in format  'Ak'"<< endl;
- 
-    // while user's input is not correct, user must enter tile again
-    while (keepGoing) {
-        
-        cout << "Your tile: ";
-        getline(cin, line);
-        istringstream iss(line);
-        parsed = {
-                istream_iterator<string>(iss), {}
-        };
-        posX = (int) parsed[0][0] - 65; 
-        posY = (int) parsed[0][1] - 97;
-        // we assume user knows where he can cover tile and where he can't
-        // so we just check if he has tile in his pool
-        if (find(players[activePlayerIndex].getLetters().begin(), players[activePlayerIndex].getLetters().end(), board.getTile(posX, posY)) == players[activePlayerIndex].getLetters().end()) {
-             cout << "You can't cover this tile!";
-        }
-        
-        else  {
-            // after covering tile => letter is became red and the letter is removed from player's pool
-            // player can go maximum 2 times
-            board.takeTile(posX,posY);
-            board.print();
-            players[activePlayerIndex].removeLetter(board.getTile(posX, posY));
-            count++;
-            if (count == 2)
-                keepGoing = false;
-        }
 
-    }
+    // Update user score
+    players[activePlayerIndex].increaseScore(board.getNumberOfLatestCoveredWords());
 }
 
 

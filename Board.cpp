@@ -92,6 +92,8 @@ void Board::addWord(const Word &word, bool check) {
             counter++;
         }
     }
+    if (word.value == "GOAT")
+        print();
 
     wordsCount++;
 }
@@ -215,6 +217,13 @@ int Board::getNumberOfCoveredWords() {
     }
 
     return counter;
+}
+
+int Board::getNumberOfLatestCoveredWords() {
+    int latestNumberOfCoveredWords = getNumberOfCoveredWords();
+    int result = latestNumberOfCoveredWords - coveredWords;
+    coveredWords = latestNumberOfCoveredWords;
+    return result;
 }
 
 bool Tile::isEmpty() {

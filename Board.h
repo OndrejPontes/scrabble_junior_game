@@ -20,6 +20,9 @@ class Board {
 private:
     std::vector<std::vector<Tile>> plan;
     int wordsCount = 0;
+    int coveredWords = 0;
+
+    int getNumberOfCoveredWords();
 
 public:
     Board() = default;
@@ -44,7 +47,7 @@ public:
 
     int getWordCount();
 
-    int getNumberOfCoveredWords();
+    int getNumberOfLatestCoveredWords();
 };
 
 #endif //SCRABBLE_JUNIOR_GAME_BOARD_H
