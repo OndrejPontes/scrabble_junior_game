@@ -31,7 +31,7 @@ void Board::addWord(const Word &word, bool check) {
         endY = word.y + (int) word.value.size();
     }
 
-    if(check) {
+    if (check) {
         // This awful condition check if there is a character before or after, start or end of the word. If so we cannot
         // add that word in board and error is thrown.
         if (
@@ -170,7 +170,7 @@ Board Board::loadFromFile(const string &filename) {
     } else {
         throw logic_error("File: ./data/ " + filename + ".txt wasn't found");
 
-        }   
+    }
     return board;
 }
 
@@ -181,9 +181,9 @@ char Board::getTile(int x, int y) {
 std::vector<char> Board::getDefaultPool() {
     vector<char> defaultPool;
 
-    for(auto & row : plan)
-        for(auto & tile : row)
-            if(!tile.isEmpty())
+    for (auto &row : plan)
+        for (auto &tile : row)
+            if (!tile.isEmpty())
                 defaultPool.push_back(tile.letter);
 
     return defaultPool;
@@ -191,6 +191,30 @@ std::vector<char> Board::getDefaultPool() {
 
 int Board::getWordCount() {
     return wordsCount;
+}
+
+int Board::getNumberOfCoveredWords() {
+    int counter = 0;
+
+    // Counting covered horizontal words
+    for (auto &row : plan) {
+        for (int j = plan[0].size() - 1; j > 0; --j) {
+            if ((j == plan[0].size() - 1 && !row[j].isFree && !row[j - 1].isFree) ||
+                (row[j + 1].isEmpty() && !row[j].isFree && !row[j - 1].isFree))
+                counter++;
+        }
+    }
+
+    // Counting covered vertical words
+    for (int i = 0; i < plan[0].size(); i++) {
+        for (int j = plan.size() - 1; j > 0; --j) {
+            if ((j == plan.size() - 1 && !plan[j][i].isFree && !plan[j - 1][i].isFree) ||
+                (plan[j + 1][i].isEmpty() && !plan[j][i].isFree && !plan[j - 1][i].isFree))
+                counter++;
+        }
+    }
+
+    return counter;
 }
 
 bool Tile::isEmpty() {

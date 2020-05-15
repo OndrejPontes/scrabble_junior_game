@@ -25,7 +25,7 @@ void Game::startGame() {
     do {
         players[activePlayerIndex].printLetters();
         coverTiles();
-        //activePlayerIndex = activePlayerIndex++ % players.size();
+        activePlayerIndex = activePlayerIndex++ % players.size();
     } while (gameDoesntHaveWinner());
 }
 

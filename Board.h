@@ -43,6 +43,8 @@ public:
     static Board loadFromFile(const std::string &filename);
 
     int getWordCount();
+
+    int getNumberOfCoveredWords();
 };
 
 #endif //SCRABBLE_JUNIOR_GAME_BOARD_H
