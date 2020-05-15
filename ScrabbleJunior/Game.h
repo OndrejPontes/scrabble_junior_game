@@ -28,7 +28,11 @@ private:
 
     void coverTiles();
 
-    void updateTilesForPlayers();
+    std::vector<Tile> getAvailableTilesForUser();
+
+    Tile getTile();
+
+    void changeLetters(int cover);
 
 public:
     void startGame();

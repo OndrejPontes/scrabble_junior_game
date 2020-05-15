@@ -10,8 +10,12 @@
 struct Tile {
     char letter;
     bool isFree = true;
+    int x = 0;
+    int y = 0;
 
-    explicit Tile(char letter) : letter(letter) {}
+    explicit Tile(char letter) : letter(letter) {};
+
+    Tile (char letter, int x, int y) : letter(letter), x(x), y(y) {};
 
     bool isEmpty();
 };
@@ -33,7 +37,7 @@ public:
 
     void addWord(const Word &word, bool check = true);
 
-    void takeTile(int x, int y);
+    void coverTile(int x, int y);
 
     int getDimensionX();
 
@@ -50,6 +54,8 @@ public:
     int getNumberOfLatestCoveredWords();
 
     bool isAlreadyCovered(int x, int y);
+
+    std::vector<Tile> getAvailableLetters();
 };
 
 #endif //SCRABBLE_JUNIOR_GAME_BOARD_H

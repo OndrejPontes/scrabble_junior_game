@@ -12,9 +12,11 @@ public:
 
     Pool(std::vector<char> letters) : letters(std::move(letters)) {}
 
-    char popLetter(int index);
+    char popLetter();
 
     int size();
+
+    void addLetter(char letter);
 };
 
 #endif //SCRABBLE_JUNIOR_GAME_POOL_H

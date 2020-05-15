@@ -92,14 +92,13 @@ void Board::addWord(const Word &word, bool check) {
             counter++;
         }
     }
-    if (word.value == "GOAT")
-        print();
 
     wordsCount++;
 }
 
-void Board::takeTile(int x, int y) {
+void Board::coverTile(int x, int y) {
     plan[x][y].isFree = false;
+    print();
 }
 
 string Board::print() {
@@ -202,7 +201,7 @@ int Board::getNumberOfCoveredWords() {
     for (auto &row : plan) {
         for (int j = plan[0].size() - 1; j > 0; --j) {
             if ((j == plan[0].size() - 1 && !row[j].isFree && !row[j - 1].isFree) ||
-                (row[j + 1].isEmpty() && !row[j].isFree && !row[j - 1].isFree))
+                (j != plan[0].size() - 1 && !row[j + 1].isEmpty() && !row[j].isFree && !row[j - 1].isFree))
                 counter++;
         }
     }
@@ -211,7 +210,7 @@ int Board::getNumberOfCoveredWords() {
     for (int i = 0; i < plan[0].size(); i++) {
         for (int j = plan.size() - 1; j > 0; --j) {
             if ((j == plan.size() - 1 && !plan[j][i].isFree && !plan[j - 1][i].isFree) ||
-                (plan[j + 1][i].isEmpty() && !plan[j][i].isFree && !plan[j - 1][i].isFree))
+                (j != plan.size() - 1 && plan[j + 1][i].isEmpty() && !plan[j][i].isFree && !plan[j - 1][i].isFree))
                 counter++;
         }
     }
@@ -228,6 +227,34 @@ int Board::getNumberOfLatestCoveredWords() {
 
 bool Board::isAlreadyCovered(int x, int y) {
     return !plan[x][y].isFree;
+}
+
+// Get all characters that are possible to cover in the current turn
+std::vector<Tile> Board::getAvailableLetters() {
+    vector<Tile> result;
+
+    for (int i = 0; i < plan.size(); ++i) {
+        for (int j = 0; j < plan[0].size(); ++j) {
+            Tile a = plan[i][j];
+            if (!plan[i][j].isEmpty() && plan[i][j].isFree && (
+                    (j == 0 && !plan[i][j + 1].isEmpty()) ||
+                    (j == plan[0].size() - 1 && !plan[i][j - 1].isFree) ||
+                    (j != 0 && j != plan[0].size() - 1 && (
+                            !plan[i][j - 1].isFree ||
+                            plan[i][j - 1].isEmpty() && !plan[i][j + 1].isEmpty() && plan[i][j + 1].isFree
+                    )) ||
+                    (i == 0 && !plan[i + 1][j].isEmpty()) ||
+                    (i == plan.size() - 1 && !plan[i - 1][j].isFree) ||
+                    (i != 0 && i != plan.size() - 1 && (
+                            !plan[i - 1][j].isFree ||
+                            plan[i - 1][j].isEmpty() && !plan[i + 1][j].isEmpty() && plan[i + 1][j].isFree
+                    ))
+            ))
+                result.emplace_back(plan[i][j].letter, i, j);
+        }
+    }
+
+    return result;
 }
 
 bool Tile::isEmpty() {

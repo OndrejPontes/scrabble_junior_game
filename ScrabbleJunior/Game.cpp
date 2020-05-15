@@ -3,11 +3,9 @@
 using namespace std;
 
 #include <iostream>
-#include <sstream>
 #include <iterator>
 #include <string>
 #include <vector>
-#include <algorithm>
 #include <random>
 
 void Game::startGame() {
@@ -17,8 +15,7 @@ void Game::startGame() {
     board.print();
     preparePool();
     prepareTilesForPlayers();
-    // TODO: vo funcii coverTile: hrac vyberie tile, ktory chce zakrit vymaze sa mu z jeho poolu
-    // TREBA dorobit aktualizovanie hracovho poolu po tom ako zakryje policko
+
     // Start playing
     do {
         players[activePlayerIndex].printLetters();
@@ -117,15 +114,9 @@ void Game::preparePool() {
 }
 
 void Game::prepareTilesForPlayers() {
-    // Adding random letters to users according to C++ 11 standards
-    random_device rd;
-    mt19937 mt(rd());
-    uniform_int_distribution<int> dist;
-
     for (auto &player : players) {
         for (int i = 0; i < 7; i++) {
-            dist = uniform_int_distribution(0, pool.size() - 1);
-            player.addLetter(pool.popLetter(dist(mt)));
+            player.addLetter(pool.popLetter());
         }
     }
 }
@@ -142,55 +133,102 @@ bool Game::gameDoesntHaveWinner() {
 }
 
 void Game::coverTiles() {
-    int posX, posY;
     vector<string> parsed;
     string line;
-    bool keepGoing = true;
-    int count = 0;
-    cout << "Enter  position of tile that you want to cover in format  'Ak'" << endl;
+    vector<Tile> tilesForCover = getAvailableTilesForUser();
+    int tilesToCover = 2;
 
-    // while user's input is not correct, user must enter tile again
-    while (keepGoing) {
+    while (tilesToCover > 0 && !tilesForCover.empty()) {
+        cout << "Enter position of tile that you want to cover in format 'Ak'" << endl;
+        Tile userTile = getTile();
 
-        cout << "Your tile: ";
-        getline(cin, line);
-        istringstream iss(line);
-        parsed = {
-                istream_iterator<string>(iss), {}
-        };
-        posX = (int) parsed[0][0] - 65;
-        posY = (int) parsed[0][1] - 97;
-        // we assume user knows where he can cover tile and where he can't
-        // so we just check if he has tile in his pool
-        // player can't cover a letter that is already covered
-        if ((board.isAlreadyCovered(posX, posY) == true) ||
-            find(players[activePlayerIndex].getLetters().begin(), players[activePlayerIndex].getLetters().end(),
-                 board.getTile(posX, posY)) == players[activePlayerIndex].getLetters().end()) {
-            cout << "You can't cover this tile!";
-        } else {
-            // after covering tile => letter is became red and the letter is removed from player's pool
-            // player can go maximum 2 times
-            board.takeTile(posX, posY);
-            board.print();
-            players[activePlayerIndex].removeLetter(board.getTile(posX, posY));
-            updateTilesForPlayers();
-            count++;
-            if (count == 2)
-                keepGoing = false;
+        for (auto &tile : tilesForCover) {
+            if (tile.letter == userTile.letter && tile.x == userTile.x && tile.y == userTile.y) {
+                players[activePlayerIndex].removeLetter(tile.letter);
+                board.coverTile(tile.x, tile.y);
+                tilesForCover = getAvailableTilesForUser();
+                tilesToCover--;
+                break;
+            }
         }
     }
+
+    if (tilesToCover > 0)
+        changeLetters(tilesToCover);
+
+    if (pool.size() > 0)
+        for (int i = 0; i < 7 - players[activePlayerIndex].getLetters().size(); i++) {
+            players[activePlayerIndex].addLetter(pool.popLetter());
+        }
+    else
+        cout << "You can't take more tiles from pool, because it is empty" << endl;
+
     players[activePlayerIndex].increaseScore(board.getNumberOfLatestCoveredWords());
 }
 
-void Game::updateTilesForPlayers() {
-    random_device rd;
-    mt19937 mt(rd());
-    uniform_int_distribution<int> dist;
+vector<Tile> Game::getAvailableTilesForUser() {
+    vector<Tile> result;
 
-    for (int i = 0; i < 7 - players[activePlayerIndex].getLetters().size(); i++) {
-        dist = uniform_int_distribution(0, pool.size() - 1);
-        players[activePlayerIndex].addLetter(pool.popLetter(dist(mt)));
+    for (auto &tile : board.getAvailableLetters()) {
+        for (auto &letter : players[activePlayerIndex].getLetters())
+            if (tile.letter == letter)
+                result.push_back(tile);
     }
+
+    return result;
+}
+
+Tile Game::getTile() {
+    string input;
+    bool inputIsValid = true;
+    Tile tile(' ');
+
+    do {
+        if (!inputIsValid)
+            cout << "You entered invalid coordinates. Try again." << endl;
+        cout << "Your tile: ";
+        getline(cin, input);
+
+        if (input.size() != 2 || (int) input[0] < 65 || (int) input[0] > 64 + board.getDimensionX() ||
+            (int) input[1] < 97 || (int) input[1] > 96 + board.getDimensionY()) {
+            inputIsValid = false;
+            continue;
+        }
+        inputIsValid = true;
+
+        tile = Tile(board.getTile((int) input[0], (int) input[1]), (int) input[0], (int) input[1]);
+    } while (!inputIsValid);
+
+    return tile;
+}
+
+void Game::changeLetters(int tilesToCover) {
+    string input;
+    char letter;
+    cout << "You can't cover two tiles." << endl;
+
+    do {
+        cout << "Enter single letter that you want to change: ";
+        getline(cin, input);
+
+        if (input.size() == 1) {
+            auto it = find(players[activePlayerIndex].getLetters().begin(),
+                           players[activePlayerIndex].getLetters().end(), input[0]);
+            if (it == players[activePlayerIndex].getLetters().end()) {
+                cout << "You have to enter one of yours letter" << endl;
+                players[activePlayerIndex].printLetters();
+            } else {
+                letter = players[activePlayerIndex].getLetters()[distance(
+                        players[activePlayerIndex].getLetters().begin(), it)];
+                players[activePlayerIndex].removeLetter(letter);
+                players[activePlayerIndex].addLetter(pool.popLetter());
+                pool.addLetter(letter);
+                tilesToCover--;
+            }
+        } else {
+            cout << "Input invalid. Just SINGLE letter" << endl;
+        }
+    } while (tilesToCover > 0);
 }
 
 
