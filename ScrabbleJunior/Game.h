@@ -28,6 +28,8 @@ private:
 
     void coverTiles();
 
+    void updateTilesForPlayers();
+
 public:
     void startGame();
 };

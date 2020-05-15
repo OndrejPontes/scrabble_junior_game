@@ -45,6 +45,8 @@ public:
     int getWordCount();
 
     int getNumberOfCoveredWords();
+
+    bool isAlreadyCovered(int x, int y);
 };
 
 #endif //SCRABBLE_JUNIOR_GAME_BOARD_H

@@ -26,6 +26,8 @@ public:
     void printLetters();
 
     const std::vector<char> &getLetters() const;
+
+    
 };
 
 #endif //SCRABBLE_JUNIOR_GAME_PLAYER_H

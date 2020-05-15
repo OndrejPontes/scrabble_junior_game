@@ -17,7 +17,6 @@ void Game::startGame() {
     board.print();
     preparePool();
     prepareTilesForPlayers();
-
     // TODO: vo funcii coverTile: hrac vyberie tile, ktory chce zakrit vymaze sa mu z jeho poolu
     // NEFUNGUJE prepinanie hracov, vzdy hodi prveho hraca
     // TREBA dorobit pocitanie skore a aktualizovanie hracovho poolu po tom ako zakryje policko
@@ -25,7 +24,8 @@ void Game::startGame() {
     do {
         players[activePlayerIndex].printLetters();
         coverTiles();
-        activePlayerIndex = activePlayerIndex++ % players.size();
+        
+       activePlayerIndex = (activePlayerIndex +1) % players.size();
     } while (gameDoesntHaveWinner());
 }
 
@@ -164,21 +164,38 @@ void Game::coverTiles() {
         posY = (int) parsed[0][1] - 97;
         // we assume user knows where he can cover tile and where he can't
         // so we just check if he has tile in his pool
-        if (find(players[activePlayerIndex].getLetters().begin(), players[activePlayerIndex].getLetters().end(), board.getTile(posX, posY)) == players[activePlayerIndex].getLetters().end()) {
+        // player can't cover a letter that is already covered
+        if ((board.isAlreadyCovered(posX,posY) == true) ||find(players[activePlayerIndex].getLetters().begin(), players[activePlayerIndex].getLetters().end(), board.getTile(posX, posY)) == players[activePlayerIndex].getLetters().end()) {
              cout << "You can't cover this tile!";
         }
-        
+         
         else  {
             // after covering tile => letter is became red and the letter is removed from player's pool
             // player can go maximum 2 times
             board.takeTile(posX,posY);
             board.print();
             players[activePlayerIndex].removeLetter(board.getTile(posX, posY));
+            updateTilesForPlayers();
             count++;
             if (count == 2)
                 keepGoing = false;
         }
 
+    }
+   
+}
+
+void Game::updateTilesForPlayers(){
+    int diff;
+    diff = 7 - players[activePlayerIndex].getLetters().size();
+    random_device rd;
+    mt19937 mt(rd());
+    uniform_int_distribution<int> dist;
+    if (diff > 0) {
+        for (int i = 0; i < diff; i++) {
+            dist = uniform_int_distribution(0, pool.size() - 1);
+            players[activePlayerIndex].addLetter(pool.popLetter(dist(mt)));
+        }
     }
 }
 

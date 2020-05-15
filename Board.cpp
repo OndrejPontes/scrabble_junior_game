@@ -217,6 +217,14 @@ int Board::getNumberOfCoveredWords() {
     return counter;
 }
 
+bool Board::isAlreadyCovered(int x, int y) {
+    if (plan[x][y].isFree == false)
+        return true;
+    else
+        return false;
+}
+
+
 bool Tile::isEmpty() {
     return letter == ' ';
 }
