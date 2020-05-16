@@ -8,7 +8,7 @@
 class BoardBuilder {
     Board board;
     std::vector<std::string> words;
-    bool shouldIKeepGoing = true;
+    bool keepGoing = true;
     std::vector<std::string> plan;
 private:
     void getSize();

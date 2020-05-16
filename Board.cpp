@@ -125,7 +125,7 @@ string Board::print() {
                 ss << char(64 + i) << "||";
             } else {
                 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), plan[i - 1][j - 1].isFree ? 240 : 244);
-                cout << plan[i - 1][j - 1].letter << (j == plan[0].size() - 1 ? "" : " ");
+                cout << plan[i - 1][j - 1].letter << (j == plan[0].size() ? "" : " ");
                 ss << plan[i - 1][j - 1].letter;
             }
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
@@ -198,7 +198,7 @@ int Board::getNumberOfCoveredWords() {
 
     // Counting covered words
     for (int i = 0; i < plan.size(); i++) {
-        for (int j = 0; j < plan[0].size() - 1; j++) {
+        for (int j = 0; j < plan[0].size(); j++) {
             if (!plan[i][j].isFree && (
                     (j == plan[0].size() - 1 && !plan[i][j - 1].isFree) ||
                     (j != 0) && !plan[i][j - 1].isFree && plan[i][j + 1].isEmpty() ||

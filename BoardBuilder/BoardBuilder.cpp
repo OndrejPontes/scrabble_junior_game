@@ -11,18 +11,18 @@ void BoardBuilder::startBuilding() {
     getSize();
     loadWords();
 
-    while (shouldIKeepGoing) {
+    while (keepGoing) {
         board.print();
         switch (whatShouldIDo()) {
             case 0:
                 saveBoard(getFileName());
-                shouldIKeepGoing = false;
+                keepGoing = false;
                 break;
             case 1:
                 addWord();
                 break;
             default:
-                shouldIKeepGoing = false;
+                keepGoing = false;
         }
     }
 }

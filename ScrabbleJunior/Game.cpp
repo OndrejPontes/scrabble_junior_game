@@ -25,6 +25,7 @@ void Game::startGame() {
     announceWinner();
 }
 
+// Get user names
 void Game::getPlayers() {
     int numberOfPlayers = getNumberOfPlayers();
     for (int i = 0; i < numberOfPlayers; i++) {
@@ -37,6 +38,7 @@ void Game::getPlayers() {
     cout << endl << endl;
 }
 
+// Get number of players
 int Game::getNumberOfPlayers() {
     int numberOfPlayers = 0;
     string input;
@@ -60,6 +62,7 @@ int Game::getNumberOfPlayers() {
     return numberOfPlayers;
 }
 
+// Load board from file which is get from user
 void Game::loadBoard() {
     string input;
     bool isLoaded;
@@ -82,6 +85,9 @@ void Game::loadBoard() {
     cout << endl;
 }
 
+// This function will prepare pool. Base of pool is made of letters from board and if you want you can add random
+// letters to make game more difficult and random. Also when plan has less letters than base letters for each user
+// together, you have to add it.
 void Game::preparePool() {
     string input;
     int additionalTiles;
@@ -126,6 +132,7 @@ void Game::preparePool() {
     pool = defaultPool;
 }
 
+// Give letters to each player
 void Game::prepareTilesForPlayers() {
     for (auto &player : players) {
         for (int i = 0; i < 7; i++) {
@@ -134,6 +141,7 @@ void Game::prepareTilesForPlayers() {
     }
 }
 
+// This is function that is checking if game ended. The game can end only when users will cover all the files.
 bool Game::gameDoesntHaveWinner() {
     int totalScore = 0;
 
@@ -142,16 +150,19 @@ bool Game::gameDoesntHaveWinner() {
     }
 
     return totalScore < board.getWordCount();
-
 }
 
+// This is complex function that handle covering tiles by user
 void Game::coverTiles() {
     vector<string> parsed;
     string line;
+    // These tiles is possible to play in current turn
     vector<Tile> tilesForCover = getAvailableTilesForUser();
+    // Every player has to play 2 letter each turn
     int tilesToCover = 2;
     bool enteredInvalidLetter = false;
 
+    // Main loop is skipped only when user played 2 letters or user doesn't have what to play or there game ended
     while (tilesToCover > 0 && !tilesForCover.empty() && gameDoesntHaveWinner()) {
         printDefaultInformation();
         players[activePlayerIndex].printLetters();
@@ -161,8 +172,10 @@ void Game::coverTiles() {
 
         cout << players[activePlayerIndex].getName() << " enter position of "
              << (2 - tilesToCover == 0 ? "first" : "second") << " tile that you want to cover in format 'Ak'" << endl;
+        // Getting letter that user will play
         Tile userTile = getTile();
 
+        // Controlling if user has letter that he wants to play
         for (auto &tile : tilesForCover) {
             if (tile.letter == userTile.letter && tile.x == userTile.x && tile.y == userTile.y) {
                 players[activePlayerIndex].removeLetter(tile.letter);
@@ -179,17 +192,21 @@ void Game::coverTiles() {
         }
     }
 
+    // If user can't play two letters he has to change them. Also this is skipped only when user played two letters or
+    // pool is empty so user can't change letter or game ended.
     if (tilesToCover > 0 && gameDoesntHaveWinner() && pool.size() > 0)
         changeLetters(tilesToCover);
 
+    // At the end program will give random letters from pool to user. Number depends on how many letters user played.
     if (pool.size() > 0)
         for (int i = 0; i < 7 - players[activePlayerIndex].getLetters().size(); i++) {
             players[activePlayerIndex].addLetter(pool.popLetter());
         }
-
+    // If player covered words in his turn he will get points for each word.
     players[activePlayerIndex].increaseScore(board.getNumberOfLatestCoveredWords());
 }
 
+// This function return tiles that current player can play
 vector<Tile> Game::getAvailableTilesForUser() {
     vector<Tile> result;
 
