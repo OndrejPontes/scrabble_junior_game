@@ -273,13 +273,17 @@ void Game::clean() {
 }
 
 void Game::printDefaultInformation() {
+    string score = "Score: ";
+    for(auto &player : players)
+        score += player.getName() + " = " + to_string(player.getScore()) + "  ";
     clean();
-    cout << players[activePlayerIndex].getName() << "'s turn." << endl << endl;
+    cout << players[activePlayerIndex].getName() << "'s turn. " << score << endl << endl;
     board.print();
     players[activePlayerIndex].printLetters();
 }
 
 void Game::announceWinner() {
+    printDefaultInformation();
     auto player = max_element(players.begin(), players.end(),
                               [](const Player &a, const Player &b) { return a.getScore() < b.getScore(); });
     cout << endl << "Winner is player: " << player->getName() << endl << endl;
