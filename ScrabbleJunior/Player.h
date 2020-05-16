@@ -19,7 +19,7 @@ public:
 
     void removeLetter(char letter);
 
-    int getScore();
+    int getScore() const;
 
     void increaseScore(int toAdd);
 

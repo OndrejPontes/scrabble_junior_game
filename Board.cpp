@@ -116,17 +116,17 @@ string Board::print() {
         for (int j = 0; j < plan[0].size() + 1; j++) {
             coord.Y = j;
             if (i == 0 && j == 0) {
-                cout << ' ';
+                cout << "  ";
                 ss << " ||";
             } else if (i == 0) {
-                cout << char(96 + j);
+                cout << char(96 + j) << " ";
                 ss << char(96 + j);
             } else if (j == 0) {
-                cout << char(64 + i);
+                cout << char(64 + i) << " ";
                 ss << char(64 + i) << "||";
             } else {
                 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), plan[i - 1][j - 1].isFree ? 240 : 244);
-                cout << plan[i - 1][j - 1].letter;
+                cout << plan[i - 1][j - 1].letter << (j == plan[0].size() - 1 ? "" : " ");
                 ss << plan[i - 1][j - 1].letter;
             }
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
@@ -197,20 +197,15 @@ int Board::getWordCount() {
 int Board::getNumberOfCoveredWords() {
     int counter = 0;
 
-    // Counting covered horizontal words
-    for (auto &row : plan) {
-        for (int j = plan[0].size() - 1; j > 0; --j) {
-            if ((j == plan[0].size() - 1 && !row[j].isFree && !row[j - 1].isFree) ||
-                (j != plan[0].size() - 1 && !row[j + 1].isEmpty() && !row[j].isFree && !row[j - 1].isFree))
-                counter++;
-        }
-    }
-
-    // Counting covered vertical words
-    for (int i = 0; i < plan[0].size(); i++) {
-        for (int j = plan.size() - 1; j > 0; --j) {
-            if ((j == plan.size() - 1 && !plan[j][i].isFree && !plan[j - 1][i].isFree) ||
-                (j != plan.size() - 1 && plan[j + 1][i].isEmpty() && !plan[j][i].isFree && !plan[j - 1][i].isFree))
+    // Counting covered words
+    for (int i = 0; i < plan.size(); i++) {
+        for (int j = 0; j < plan[0].size() - 1; j++) {
+            if (!plan[i][j].isFree && (
+                    (j == plan[0].size() - 1 && !plan[i][j - 1].isFree) ||
+                    (j != 0) && !plan[i][j - 1].isFree && plan[i][j + 1].isEmpty() ||
+                    (i == plan.size() - 1 && !plan[i - 1][j].isFree) ||
+                    (i != 0) && !plan[i - 1][j].isFree && plan[i + 1][j].isEmpty()
+            ))
                 counter++;
         }
     }

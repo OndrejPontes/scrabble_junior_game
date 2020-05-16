@@ -2,9 +2,11 @@
 #define SCRABBLE_JUNIOR_GAME_GAME_H
 
 #include "Player.h"
-#include "../Board.h"
 #include "string"
 #include "vector"
+#include <windows.h>
+
+#include "../Board.h"
 #include "Pool.h"
 
 class Game {
@@ -33,6 +35,12 @@ private:
     Tile getTile();
 
     void changeLetters(int cover);
+
+    void clean();
+
+    void printDefaultInformation();
+
+    void announceWinner();
 
 public:
     void startGame();

@@ -1,7 +1,6 @@
 #include "Pool.h"
 #include <random>
 
-
 using namespace std;
 
 char Pool::popLetter() {

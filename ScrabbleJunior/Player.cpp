@@ -26,7 +26,7 @@ void Player::removeLetter(char letter) {
                           " is not in his/her letters.");
 }
 
-int Player::getScore() {
+int Player::getScore() const {
     return score;
 }
 
@@ -38,11 +38,9 @@ void Player::printLetters() {
     cout << "Player " << name << " has these letters: ";
     for(auto &letter : letters)
         cout << letter << " ";
-    cout << endl;
+    cout << endl << endl ;
 }
 
 const std::vector<char> &Player::getLetters() const {
     return letters;
 }
-
-

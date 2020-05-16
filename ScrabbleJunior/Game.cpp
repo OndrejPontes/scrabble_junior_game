@@ -2,26 +2,27 @@
 
 using namespace std;
 
+#include <algorithm>
 #include <iostream>
 #include <iterator>
+#include <random>
 #include <string>
 #include <vector>
-#include <random>
 
 void Game::startGame() {
     // Setup everything
     getPlayers();
     loadBoard();
-    board.print();
     preparePool();
     prepareTilesForPlayers();
 
     // Start playing
     do {
-        players[activePlayerIndex].printLetters();
         coverTiles();
         activePlayerIndex = (activePlayerIndex + 1) % players.size();
     } while (gameDoesntHaveWinner());
+
+    announceWinner();
 }
 
 void Game::getPlayers() {
@@ -77,25 +78,32 @@ void Game::loadBoard() {
         }
 
     } while (!isLoaded);
+
+    cout << endl;
 }
 
 void Game::preparePool() {
     string input;
     int additionalTiles;
     vector<char> defaultPool = board.getDefaultPool();
+    bool inputIsValid = false;
 
     cout << "Your default pool has " << to_string(defaultPool.size()) << " tiles, how many do you want to add, to make "
          << "it more difficult ?" << endl;
-    cout << "Number of additional tiles: ";
-    getline(cin, input);
+    do {
+        cout << "Number of additional tiles: ";
 
-    try {
-        additionalTiles = stoi(input);
-    } catch (const invalid_argument &) {
-        cout << "Input is invalid. There can't be any other character then number" << endl;
-    } catch (const out_of_range &) {
-        cout << "Input is invalid. Number has to be in range of Integer." << endl;
-    }
+        getline(cin, input);
+
+        try {
+            additionalTiles = stoi(input);
+            inputIsValid = true;
+        } catch (const invalid_argument &) {
+            cout << "Input is invalid. There can't be any other character then number" << endl;
+        } catch (const out_of_range &) {
+            cout << "Input is invalid. Number has to be in range of Integer." << endl;
+        }
+    } while (!inputIsValid);
 
     // Adding random tiles according to C++ 11 standards
     random_device rd;
@@ -125,10 +133,11 @@ bool Game::gameDoesntHaveWinner() {
     int totalScore = 0;
 
     for (auto player : players) {
-        totalScore = +player.getScore();
+        totalScore += player.getScore();
     }
 
-    return totalScore < board.getWordCount() && pool.size() != 0;
+//    return totalScore < board.getWordCount() && pool.size() != 0;
+    return totalScore < board.getWordCount();
 
 }
 
@@ -137,9 +146,16 @@ void Game::coverTiles() {
     string line;
     vector<Tile> tilesForCover = getAvailableTilesForUser();
     int tilesToCover = 2;
+    bool enteredInvalidLetter = false;
 
     while (tilesToCover > 0 && !tilesForCover.empty()) {
-        cout << "Enter position of tile that you want to cover in format 'Ak'" << endl;
+        printDefaultInformation();
+        if (enteredInvalidLetter)
+            cout << "You entered position of tile that you don't have in your letters or is empty. Try again." << endl
+                 << endl;
+
+        cout << players[activePlayerIndex].getName() << " enter position of "
+             << (2 - tilesToCover == 0 ? "first" : "second") << " tile that you want to cover in format 'Ak'" << endl;
         Tile userTile = getTile();
 
         for (auto &tile : tilesForCover) {
@@ -148,7 +164,10 @@ void Game::coverTiles() {
                 board.coverTile(tile.x, tile.y);
                 tilesForCover = getAvailableTilesForUser();
                 tilesToCover--;
+                enteredInvalidLetter = false;
                 break;
+            } else {
+                enteredInvalidLetter = true;
             }
         }
     }
@@ -182,6 +201,7 @@ Tile Game::getTile() {
     string input;
     bool inputIsValid = true;
     Tile tile(' ');
+    int x, y;
 
     do {
         if (!inputIsValid)
@@ -195,8 +215,9 @@ Tile Game::getTile() {
             continue;
         }
         inputIsValid = true;
-
-        tile = Tile(board.getTile((int) input[0], (int) input[1]), (int) input[0], (int) input[1]);
+        x = (int) input[0] - 65;
+        y = (int) input[1] - 97;
+        tile = Tile(board.getTile(x, y), x, y);
     } while (!inputIsValid);
 
     return tile;
@@ -205,10 +226,12 @@ Tile Game::getTile() {
 void Game::changeLetters(int tilesToCover) {
     string input;
     char letter;
-    cout << "You can't cover two tiles." << endl;
+
+    printDefaultInformation();
+    cout << "You can't cover " << tilesToCover << " tiles. Change tiles." << endl;
 
     do {
-        cout << "Enter single letter that you want to change: ";
+        cout << "Enter letter that you want to change: ";
         getline(cin, input);
 
         if (input.size() == 1) {
@@ -231,4 +254,34 @@ void Game::changeLetters(int tilesToCover) {
     } while (tilesToCover > 0);
 }
 
+// Clean console according to code published in moodle
+void Game::clean() {
+    COORD upperLeftCorner = {0, 0};
+    DWORD charsWritten;
+    DWORD conSize;
+    HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
 
+    GetConsoleScreenBufferInfo(hCon, &csbi);
+    conSize = csbi.dwSize.X * csbi.dwSize.Y;
+
+    FillConsoleOutputCharacter(hCon, TEXT(' '), conSize, upperLeftCorner, &charsWritten);
+    GetConsoleScreenBufferInfo(hCon, &csbi);
+    FillConsoleOutputAttribute(hCon, csbi.wAttributes, conSize, upperLeftCorner, &charsWritten);
+
+    SetConsoleCursorPosition(hCon, upperLeftCorner);
+}
+
+void Game::printDefaultInformation() {
+    clean();
+    cout << players[activePlayerIndex].getName() << "'s turn." << endl << endl;
+    board.print();
+    players[activePlayerIndex].printLetters();
+}
+
+void Game::announceWinner() {
+    auto player = max_element(players.begin(), players.end(),
+                              [](const Player &a, const Player &b) { return a.getScore() < b.getScore(); });
+    cout << endl << "Winner is player: " << player->getName() << endl << endl;
+    system("pause >nul | set /p = Press any key to exit...");
+}
