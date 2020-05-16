@@ -97,7 +97,12 @@ void Game::preparePool() {
 
         try {
             additionalTiles = stoi(input);
-            inputIsValid = true;
+            if (defaultPool.size() + additionalTiles < players.size() * 7) {
+                cout << "You have to have more than " << players.size() * 7 << " letters in pool to be able to play."
+                     << endl;
+            } else {
+                inputIsValid = true;
+            }
         } catch (const invalid_argument &) {
             cout << "Input is invalid. There can't be any other character then number" << endl;
         } catch (const out_of_range &) {
@@ -136,7 +141,6 @@ bool Game::gameDoesntHaveWinner() {
         totalScore += player.getScore();
     }
 
-//    return totalScore < board.getWordCount() && pool.size() != 0;
     return totalScore < board.getWordCount();
 
 }
@@ -148,8 +152,9 @@ void Game::coverTiles() {
     int tilesToCover = 2;
     bool enteredInvalidLetter = false;
 
-    while (tilesToCover > 0 && !tilesForCover.empty()) {
+    while (tilesToCover > 0 && !tilesForCover.empty() && gameDoesntHaveWinner()) {
         printDefaultInformation();
+        players[activePlayerIndex].printLetters();
         if (enteredInvalidLetter)
             cout << "You entered position of tile that you don't have in your letters or is empty. Try again." << endl
                  << endl;
@@ -162,6 +167,8 @@ void Game::coverTiles() {
             if (tile.letter == userTile.letter && tile.x == userTile.x && tile.y == userTile.y) {
                 players[activePlayerIndex].removeLetter(tile.letter);
                 board.coverTile(tile.x, tile.y);
+                printDefaultInformation();
+                players[activePlayerIndex].printLetters();
                 tilesForCover = getAvailableTilesForUser();
                 tilesToCover--;
                 enteredInvalidLetter = false;
@@ -172,15 +179,13 @@ void Game::coverTiles() {
         }
     }
 
-    if (tilesToCover > 0)
+    if (tilesToCover > 0 && gameDoesntHaveWinner() && pool.size() > 0)
         changeLetters(tilesToCover);
 
     if (pool.size() > 0)
         for (int i = 0; i < 7 - players[activePlayerIndex].getLetters().size(); i++) {
             players[activePlayerIndex].addLetter(pool.popLetter());
         }
-    else
-        cout << "You can't take more tiles from pool, because it is empty" << endl;
 
     players[activePlayerIndex].increaseScore(board.getNumberOfLatestCoveredWords());
 }
@@ -228,6 +233,7 @@ void Game::changeLetters(int tilesToCover) {
     char letter;
 
     printDefaultInformation();
+    players[activePlayerIndex].printLetters();
     cout << "You can't cover " << tilesToCover << " tiles. Change tiles." << endl;
 
     do {
@@ -274,16 +280,15 @@ void Game::clean() {
 
 void Game::printDefaultInformation() {
     string score = "Score: ";
-    for(auto &player : players)
+    for (auto &player : players)
         score += player.getName() + " = " + to_string(player.getScore()) + "  ";
     clean();
     cout << players[activePlayerIndex].getName() << "'s turn. " << score << endl << endl;
     board.print();
-    players[activePlayerIndex].printLetters();
 }
 
 void Game::announceWinner() {
-    board.print();
+    printDefaultInformation();
     auto player = max_element(players.begin(), players.end(),
                               [](const Player &a, const Player &b) { return a.getScore() < b.getScore(); });
     cout << endl << "Winner is player: " << player->getName() << endl << endl;

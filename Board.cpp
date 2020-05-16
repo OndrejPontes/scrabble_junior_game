@@ -98,7 +98,6 @@ void Board::addWord(const Word &word, bool check) {
 
 void Board::coverTile(int x, int y) {
     plan[x][y].isFree = false;
-    print();
 }
 
 string Board::print() {
