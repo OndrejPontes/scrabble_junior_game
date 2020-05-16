@@ -283,7 +283,7 @@ void Game::printDefaultInformation() {
 }
 
 void Game::announceWinner() {
-    printDefaultInformation();
+    board.print();
     auto player = max_element(players.begin(), players.end(),
                               [](const Player &a, const Player &b) { return a.getScore() < b.getScore(); });
     cout << endl << "Winner is player: " << player->getName() << endl << endl;
