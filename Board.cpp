@@ -107,26 +107,26 @@ string Board::print() {
     for (int i = 0; i < plan.size() + 1; i++) {
         coord.X = i;
         if (i == 1) {
-            ss << "====";
+            ss << "===";
             for (int j = 0; j < plan[0].size() + 1; j++)
-                ss << "=";
+                ss << "==";
             ss << endl;
         }
         for (int j = 0; j < plan[0].size() + 1; j++) {
             coord.Y = j;
             if (i == 0 && j == 0) {
                 cout << "  ";
-                ss << " ||";
+                ss << "  ||";
             } else if (i == 0) {
                 cout << char(96 + j) << " ";
-                ss << char(96 + j);
+                ss << char(96 + j) << (j == plan[0].size() ? "" : " ");
             } else if (j == 0) {
                 cout << char(64 + i) << " ";
-                ss << char(64 + i) << "||";
+                ss << char(64 + i) << " ||";
             } else {
                 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), plan[i - 1][j - 1].isFree ? 240 : 244);
                 cout << plan[i - 1][j - 1].letter << (j == plan[0].size() ? "" : " ");
-                ss << plan[i - 1][j - 1].letter;
+                ss << plan[i - 1][j - 1].letter << (j == plan[0].size() ? "" : " ");
             }
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
         }
@@ -135,8 +135,8 @@ string Board::print() {
     }
     cout << endl;
 
-    for (int j = 0; j < plan[0].size() + 5; j++)
-        ss << "=";
+    for (int j = 0; j < plan[0].size() + 3; j++)
+        ss << (j == 0 ? "=" : "==");
 
     return ss.str();
 }
