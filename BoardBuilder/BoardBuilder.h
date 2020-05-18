@@ -29,5 +29,4 @@ public:
     void startBuilding();
 };
 
-
 #endif //SCRABBLE_JUNIOR_GAME_BOARDBUILDER_H

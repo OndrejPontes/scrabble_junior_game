@@ -1,4 +1,8 @@
-The Scrabble Junior Game consists of two sub-programs: BoardBuilder and ScrabbleJunior, in which all objectives have been accomplished. 
+Team members:
+Ondrej Ponteš - up201911215 - participation 50%
+Martin Majtán - up201911216 - participation 50%
+
+The Scrabble Junior Game consists of two sub-programs: BoardBuilder and ScrabbleJunior, in which all objectives have been accomplished.
 The first part is BoardBuilder, which sets the board and the other part - ScrabbleJunior let us  play the game.
 
 The code itself contains all comments needed to understand specific functions.
@@ -16,3 +20,7 @@ Program "Scrabble Junior":
 - program contains controls for entering invalid letter or positions of the board
 - the game ends with the announcement of the winner
 
+We are sharing logic of Board and Word classes, so we put it in root of project. Whole project is build with cmake, so we add CMakeLists.txt.
+There is one crucial part that copy data directory into final destination. This is important for loading WORDS.TXT and default.txt which
+contains board plan from assigment pdf. In case you will not use cmake and you will have a problem with finding txt files just copy them
+into destination folder under /data/ directory.

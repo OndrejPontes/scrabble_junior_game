@@ -36,9 +36,9 @@ void Player::increaseScore(int toAdd) {
 
 void Player::printLetters() {
     cout << "Player " << name << " has these letters: ";
-    for(auto &letter : letters)
+    for (auto &letter : letters)
         cout << letter << " ";
-    cout << endl << endl ;
+    cout << endl << endl;
 }
 
 const std::vector<char> &Player::getLetters() const {

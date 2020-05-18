@@ -15,7 +15,7 @@ struct Tile {
 
     explicit Tile(char letter) : letter(letter) {};
 
-    Tile (char letter, int x, int y) : letter(letter), x(x), y(y) {};
+    Tile(char letter, int x, int y) : letter(letter), x(x), y(y) {};
 
     bool isEmpty();
 };

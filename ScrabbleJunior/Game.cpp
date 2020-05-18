@@ -219,6 +219,7 @@ vector<Tile> Game::getAvailableTilesForUser() {
     return result;
 }
 
+// Function that will get letter, that that will be played, from player that is currently on the move
 Tile Game::getTile() {
     string input;
     bool inputIsValid = true;
@@ -245,6 +246,7 @@ Tile Game::getTile() {
     return tile;
 }
 
+// Changing letters in case that user didn't play two or one letter.
 void Game::changeLetters(int tilesToCover) {
     string input;
     char letter;

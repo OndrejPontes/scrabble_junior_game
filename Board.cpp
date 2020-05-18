@@ -100,6 +100,8 @@ void Board::coverTile(int x, int y) {
     plan[x][y].isFree = false;
 }
 
+// This is function for printing game board and also returning a string of current game board, that is added to txt file
+// when we are creating board.
 string Board::print() {
     COORD coord;
     stringstream ss;
@@ -141,14 +143,17 @@ string Board::print() {
     return ss.str();
 }
 
+// Function return height of plan
 int Board::getDimensionX() {
     return plan.size();
 }
 
+// Function return width of plan
 int Board::getDimensionY() {
     return plan[0].size();
 }
 
+// Static function used to load board from file created by board builder.
 Board Board::loadFromFile(const string &filename) {
     ifstream file("./data/" + filename + ".txt");
     string str;
@@ -178,6 +183,7 @@ char Board::getTile(int x, int y) {
     return plan[x][y].letter;
 }
 
+// Returning default pool contains all letters on board
 std::vector<char> Board::getDefaultPool() {
     vector<char> defaultPool;
 
@@ -212,6 +218,7 @@ int Board::getNumberOfCoveredWords() {
     return counter;
 }
 
+// This function return number of words covered for last turn
 int Board::getNumberOfLatestCoveredWords() {
     int latestNumberOfCoveredWords = getNumberOfCoveredWords();
     int result = latestNumberOfCoveredWords - coveredWords;
