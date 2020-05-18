@@ -1,6 +1,6 @@
 Team members:
-Ondrej Ponteš - up201911215 - participation 50%
 Martin Majtán - up201911216 - participation 50%
+Ondrej Ponteš - up201911215 - participation 50%
 
 The Scrabble Junior Game consists of two sub-programs: BoardBuilder and ScrabbleJunior, in which all objectives have been accomplished.
 The first part is BoardBuilder, which sets the board and the other part - ScrabbleJunior let us  play the game.
